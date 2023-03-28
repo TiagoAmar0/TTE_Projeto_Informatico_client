@@ -1,7 +1,5 @@
 <template>
-  <DashboardLayout>
-    <h1 class="is-size-3">Services</h1>
-    <hr>
+  <DashboardLayout :title="'Serviços (' + $store.getters.servicesTotal + ')'">
     <ServicesTable />
   </DashboardLayout>
 </template>
