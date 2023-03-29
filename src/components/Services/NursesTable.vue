@@ -1,5 +1,13 @@
 <template>
   <div>
+    <article class="message is-warning my-2" v-if="!leadNurses.length">
+      <div class="message-header">
+        <p>Aviso</p>
+      </div>
+      <div class="message-body">
+        Não existe um enfermeiro chefe associado a este serviço
+      </div>
+    </article>
     <table class="table is-fullwidth is-striped">
       <thead>
       <tr>
