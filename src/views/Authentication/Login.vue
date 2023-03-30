@@ -10,7 +10,7 @@
         <form @submit.prevent="login">
           <div class="column">
             <div class="control has-icons-left">
-              <input class="input is-small" type="email" placeholder="Email" v-model="email">
+              <input :disabled="processing" class="input is-small" type="email" placeholder="Email" v-model="email">
               <span class="icon is-small is-left">
               <i class="fas fa-envelope"></i>
             </span>
@@ -18,19 +18,18 @@
           </div>
           <div class="column">
             <div class="control has-icons-left">
-              <input class="input is-small" type="password" placeholder="Password" v-model="password">
+              <input :disabled="processing" class="input is-small" type="password" placeholder="Password" v-model="password">
               <span class="icon is-small is-left">
               <i class="fas fa-key"></i>
             </span>
             </div>
           </div>
           <div class="column">
-            <button class="button is-primary is-fullwidth" type="submit">
+            <button :disabled="processing" :class="{ 'is-loading': processing }" class="button is-primary is-fullwidth" type="submit">
               Login
             </button>
           </div>
         </form>
-
       </div>
     </div>
   </div>
@@ -41,11 +40,13 @@ export default {
   data () {
     return {
       email: null,
-      password: null
+      password: null,
+      processing: false
     }
   },
   methods: {
     login () {
+      this.processing = true
       this.$store.dispatch('login', { email: this.email, password: this.password })
           .then(() => {
             this.$toast.success('Sessão iniciada')
@@ -55,10 +56,12 @@ export default {
             this.password = null
             // this.$toast.error(error.data.message)
           })
+          .finally(() => {
+            this.processing = false
+          })
     }
   },
   mounted(){
-    console.log(this.$store.state.user)
    if(this.$store.state.user)
      this.$router.push('/dashboard')
   }

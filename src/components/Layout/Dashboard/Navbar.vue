@@ -29,9 +29,10 @@
       <div class="navbar-end">
         <div class="navbar-item">
           <div class="buttons">
-            <span class="button is-primary" @click="logout">
+            <button class="button is-primary" :class="{ 'is-loading': processing }" :disabled
+                ="processing" @click="logout">
               <strong>Terminar Sessão</strong>
-            </span>
+            </button>
           </div>
         </div>
       </div>
@@ -44,15 +45,20 @@ export default {
   name: 'Navbar',
   data(){
     return {
-      show: false
+      show: false,
+      processing: false
     }
   },
   methods: {
     logout() {
+      this.processing = true
       this.$store.dispatch('logout')
           .then(() => {
             this.$toast.success('Sessão terminada')
             this.$router.push({ name: 'login' })
+          })
+          .finally(() => {
+            this.processing = false
           })
     }
   }
