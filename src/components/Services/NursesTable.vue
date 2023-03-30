@@ -8,35 +8,37 @@
         Não existe um enfermeiro chefe associado a este serviço
       </div>
     </article>
-    <table class="table is-fullwidth is-striped">
-      <thead>
-      <tr>
-        <th>Nome</th>
-        <th>Função</th>
-        <th>Ações</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr v-for="ln in leadNurses" :key="ln.id">
-        <td>{{ ln.name }}</td>
-        <td>Enfermeiro Chefe</td>
-        <td>
-          <button class="button is-danger" @click="$emit('disassociate', ln.id)">
-            <i class="fas fa-minus"></i>
-          </button>
-        </td>
-      </tr>
-      <tr v-for="rn in regularNurses" :key="rn.id">
-        <td>{{ rn.name }}</td>
-        <td>Enfermeiro</td>
-        <td>
-          <button class="button is-danger" @click="$emit('disassociate', rn.id)">
-            <i class="fas fa-minus"></i>
-          </button>
-        </td>
-      </tr>
-      </tbody>
-    </table>
+    <div class="table-container">
+      <table class="table is-fullwidth is-striped">
+        <thead>
+        <tr>
+          <th>Nome</th>
+          <th>Função</th>
+          <th>Ações</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="ln in leadNurses" :key="ln.id">
+          <td>{{ ln.name }}</td>
+          <td>Enfermeiro Chefe</td>
+          <td>
+            <button class="button is-danger" @click="$emit('disassociate', ln.id)">
+              <i class="fas fa-minus"></i>
+            </button>
+          </td>
+        </tr>
+        <tr v-for="rn in regularNurses" :key="rn.id">
+          <td>{{ rn.name }}</td>
+          <td>Enfermeiro</td>
+          <td>
+            <button class="button is-danger" @click="$emit('disassociate', rn.id)">
+              <i class="fas fa-minus"></i>
+            </button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </template>
 

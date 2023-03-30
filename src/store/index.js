@@ -72,7 +72,24 @@ export default createStore({
         resetUsers(state){
             state.users = []
             state.totalUsers = 0
-        }
+        },
+        deleteUser (state, user) {
+            let idx = state.users.findIndex((u) => u.id === user.id)
+            if (idx >= 0) {
+                state.users.splice(idx, 1)
+            }
+
+            state.totalUsers--
+        },
+        updateUser(state, user){
+            let idx = state.users.findIndex((u) => u.id === user.id)
+            state.users[idx] = user
+        },
+        addUser(state, user){
+            state.users.push(user)
+            state.users = state.users.sort((a, b) => a.name.toUpperCase() < b.name.toUpperCase() ? -1 : 1)
+            this.state.totalUsers++;
+        },
     },
     getters: {
         /**
@@ -89,6 +106,8 @@ export default createStore({
         /**
          * Users
          */
+        users: (state) => state.users,
+        usersTotal: (state) => state.totalUsers,
         usersWithoutService: (state) => state.users.filter(u => u.service === null && u.type !== 'admin')
     },
     actions: {
@@ -222,6 +241,33 @@ export default createStore({
                 context.commit('resetUsers', null)
                 throw error
             }
-        }
+        },
+        async deleteUser (context, user) {
+            try{
+                let response = await axios.delete("users/" + user.id)
+                context.commit('deleteUser', response.data.data)
+                return response.data.data
+            } catch (error){
+                throw error
+            }
+        },
+        async updateUser (context, user) {
+            try{
+                let response = await axios.put("/users/" + user.id, user)
+                context.commit('updateUser', response.data.data)
+                return response.data.data
+            } catch (error){
+                throw error
+            }
+        },
+        async storeUser (context, payload) {
+            try{
+                let response = await axios.post("/users", payload)
+                context.commit('addUser', response.data.data)
+                return response.data.data
+            } catch (error){
+                throw error
+            }
+        },
     }
 })

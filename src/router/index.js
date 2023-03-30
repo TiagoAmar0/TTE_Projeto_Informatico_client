@@ -17,6 +17,9 @@ const router = createRouter({
       name: 'dashboard',
       component: () => import('../views/Dashboard.vue')
     },
+    /**
+     * Services
+     */
     {
       path: '/services',
       name: 'services',
@@ -41,6 +44,29 @@ const router = createRouter({
       path: '/services/:id/associate',
       name: 'service.associate_nurse',
       component: () => import('../views/Services/Associate.vue')
+    },
+    /**
+     * Users
+     */
+    {
+      path: '/users',
+      name: 'users',
+      component: () => import('../views/Users/Index.vue')
+    },
+    {
+      path: '/users/add',
+      name: 'users.add',
+      component: () => import('../views/Users/Add.vue')
+    },
+    {
+      path: '/users/:id',
+      name: 'user.show',
+      component: () => import('../views/Users/Show.vue')
+    },
+    {
+      path: '/users/:id/edit',
+      name: 'user.edit',
+      component: () => import('../views/Users/Edit.vue')
     }
   ]
 })
