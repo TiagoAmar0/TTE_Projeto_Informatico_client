@@ -21,7 +21,7 @@
         <td>{{ ln.name }}</td>
         <td>Enfermeiro Chefe</td>
         <td>
-          <button class="button is-danger">
+          <button class="button is-danger" @click="$emit('disassociate', ln.id)">
             <i class="fas fa-minus"></i>
           </button>
         </td>
@@ -30,7 +30,7 @@
         <td>{{ rn.name }}</td>
         <td>Enfermeiro</td>
         <td>
-          <button class="button is-danger" >
+          <button class="button is-danger" @click="$emit('disassociate', rn.id)">
             <i class="fas fa-minus"></i>
           </button>
         </td>

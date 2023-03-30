@@ -1,12 +1,17 @@
 <template>
   <DashboardLayout :title="service.name">
     <h1 class="is-size-4 mb-2">Enfermeiros ({{ service.users.length }}):</h1>
+    <RouterLink :to="{ name: 'services' }">
+      <button class="button is-primary is-light mb-4 mr-2">
+        Voltar
+      </button>
+    </RouterLink>
     <RouterLink :to="{ name: 'service.associate_nurse', params: { id: $route.params.id }}" >
       <button class="button is-primary">
         Associar enfermeiro
       </button>
     </RouterLink>
-    <service-nurses-table :nurses="service.users" />
+    <service-nurses-table :nurses="service.users" @disassociate="disassociate"/>
   </DashboardLayout>
 </template>
 
@@ -24,6 +29,19 @@ export default {
         name: null,
         users: []
       }
+    }
+  },
+  methods: {
+    disassociate(userId){
+      this.$store.dispatch('disassociateUserToService', { service: this.$route.params.id, user: userId})
+          .then((response) => {
+            this.$toast.success(response.message)
+            this.service = response.data.service
+          })
+          .catch(error => {
+            if(error.hasOwnProperty('response'))
+              this.$toast.error(error.response.data.message)
+          })
     }
   },
   mounted() {

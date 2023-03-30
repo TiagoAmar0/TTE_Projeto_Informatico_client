@@ -21,6 +21,11 @@
               <i class="fas fa-eye"></i>
             </button>
           </router-link>
+          <router-link :to="{ name: 'service.edit', params: { id: service.id }}">
+            <button class="button is-warning mx-1">
+              <i class="fas fa-pencil"></i>
+            </button>
+          </router-link>
           <button class="button is-danger mx-1" @click="serviceToDelete = service; showDeleteModal = true">
             <i class="fas fa-trash"></i>
           </button>
@@ -48,7 +53,7 @@ export default {
     return {
       search: '',
       page: 1,
-      perPage: 5,
+      perPage: 10,
       serviceToDelete: null,
       showDeleteModal: false
     };
@@ -94,7 +99,10 @@ export default {
 
   },
   watch: {
-
+    paginatedServices(){
+      if(this.paginatedServices.length === 0 && this.page > 0)
+        this.page--
+    }
   }
 };
 </script>

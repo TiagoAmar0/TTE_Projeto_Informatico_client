@@ -1,5 +1,10 @@
 <template>
   <DashboardLayout :title="'Serviços (' + $store.getters.servicesTotal + ')'">
+    <RouterLink :to="{ name: 'services.add' }">
+      <button class="button is-primary mb-4">
+        Adicionar Serviço
+      </button>
+    </RouterLink>
     <ServicesTable />
   </DashboardLayout>
 </template>

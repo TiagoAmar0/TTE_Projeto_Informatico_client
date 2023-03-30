@@ -1,6 +1,5 @@
 <template>
-  <DashboardLayout>
-    <h1>HERE</h1>
+  <DashboardLayout title="Dashboard">
   </DashboardLayout>
 </template>
 

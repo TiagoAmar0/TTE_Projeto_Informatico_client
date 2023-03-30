@@ -26,6 +26,15 @@ export default createStore({
         setServices (state, services){
             state.services = services
         },
+        addService(state, service){
+            state.services.push(service)
+            state.services = state.services.sort((a, b) => a.name.toUpperCase() < b.name.toUpperCase() ? -1 : 1)
+            this.state.totalServices++;
+        },
+        updateService(state, service){
+            let idx = state.services.findIndex((s) => s.id === service.id)
+            state.services[idx] = service
+        },
         setTotalServices(state, total){
           state.totalServices = total
         },
@@ -39,7 +48,16 @@ export default createStore({
                 state.services.splice(idx, 1)
             }
 
-            state.totalServices = state.services.length
+            state.totalServices--
+        },
+        updateUserAndService (state, data){
+            // update user
+            let idx = state.users.findIndex(u => u.id === data.user.id)
+            state.users[idx] = data.user
+
+            // update service
+            idx = state.services.findIndex((s) => s.id === data.service)
+            state.services[idx] = data.service
         },
         /**
          * Users
@@ -154,7 +172,42 @@ export default createStore({
                 throw error
             }
         },
-
+        async storeService (context, payload) {
+            try{
+                let response = await axios.post("/services", payload)
+                context.commit('addService', response.data.data)
+                return response.data.data
+            } catch (error){
+                throw error
+            }
+        },
+        async updateService (context, service) {
+            try{
+                let response = await axios.put("/services/" + service.id, service)
+                context.commit('updateService', response.data.data)
+                return response.data.data
+            } catch (error){
+                throw error
+            }
+        },
+        async associateUserToService(context, params){
+            try{
+                let response = await axios.put("/services/" + params.service + '/users/' + params.user)
+                context.commit('updateUserAndService', response.data.data)
+                return response.data.message
+            } catch (error){
+                throw error
+            }
+        },
+        async disassociateUserToService(context, params){
+            try{
+                let response = await axios.delete("/services/" + params.service + '/users/' + params.user)
+                context.commit('updateUserAndService', { user: response.data.data, service: params.service })
+                return response.data
+            } catch (error){
+                return { status: error.statusCode, message: error.response.data.message }
+            }
+        },
 
         /**
          * Users

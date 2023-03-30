@@ -23,9 +23,19 @@ const router = createRouter({
       component: () => import('../views/Services/Index.vue')
     },
     {
+      path: '/services/add',
+      name: 'services.add',
+      component: () => import('../views/Services/Add.vue')
+    },
+    {
       path: '/services/:id',
       name: 'service.show',
       component: () => import('../views/Services/Show.vue')
+    },
+    {
+      path: '/services/:id/edit',
+      name: 'service.edit',
+      component: () => import('../views/Services/Edit.vue')
     },
     {
       path: '/services/:id/associate',
