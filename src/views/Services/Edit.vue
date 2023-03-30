@@ -50,7 +50,7 @@ export default {
       this.$store.dispatch('updateService', this.service)
           .then(() => {
             this.$toast.success('O serviço foi atualizado')
-            this.$router.push({ name: 'services' })
+            this.$router.push({ name: 'service.show', params: { id: this.$route.params.id } })
           })
           .catch(error => {
             if(error.hasOwnProperty('response'))

@@ -5,35 +5,38 @@
         <input class="input" type="text" v-model="search" placeholder="Procurar...">
       </p>
     </div>
-    <table class="table is-fullwidth is-striped">
-      <thead>
-      <tr>
-        <th>Nome</th>
-        <th>Função</th>
-        <th>Ações</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr v-for="ln in filteredLeadNurses" :key="ln.id">
-        <td>{{ ln.name }}</td>
-        <td>Enfermeiro Chefe</td>
-        <td>
-          <button class="button is-success" @click="$emit('associate', ln.id)">
-            <i class="fas fa-plus"></i>
-          </button>
-        </td>
-      </tr>
-      <tr v-for="rn in filteredRegularNurses" :key="rn.id">
-        <td>{{ rn.name }}</td>
-        <td>Enfermeiro</td>
-        <td>
-          <button class="button is-success" @click="$emit('associate', rn.id)">
-            <i class="fas fa-plus"></i>
-          </button>
-        </td>
-      </tr>
-      </tbody>
-    </table>
+    <div class="table-container">
+      <table class="table is-fullwidth is-striped">
+        <thead>
+        <tr>
+          <th>Nome</th>
+          <th>Função</th>
+          <th>Ações</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="ln in filteredLeadNurses" :key="ln.id">
+          <td>{{ ln.name }}</td>
+          <td>Enfermeiro Chefe</td>
+          <td>
+            <button class="button is-success" @click="$emit('associate', ln.id)">
+              <i class="fas fa-plus"></i>
+            </button>
+          </td>
+        </tr>
+        <tr v-for="rn in filteredRegularNurses" :key="rn.id">
+          <td>{{ rn.name }}</td>
+          <td>Enfermeiro</td>
+          <td>
+            <button class="button is-success" @click="$emit('associate', rn.id)">
+              <i class="fas fa-plus"></i>
+            </button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
   </div>
 </template>
 

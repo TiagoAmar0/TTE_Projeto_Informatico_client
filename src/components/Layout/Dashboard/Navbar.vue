@@ -21,9 +21,9 @@
         <RouterLink :to="{ name: 'services' }" class="navbar-item">
           Serviços
         </RouterLink>
-        <a class="navbar-item">
+        <RouterLink :to="{ name: 'users' }" class="navbar-item">
           Utilizadores
-        </a>
+        </RouterLink>
       </div>
 
       <div class="navbar-end">
