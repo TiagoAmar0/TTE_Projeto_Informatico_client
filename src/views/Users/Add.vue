@@ -14,12 +14,6 @@
         </div>
       </div>
       <div class="field">
-        <label class="label">Password</label>
-        <div class="control">
-          <input class="input" type="password" v-model="form.password" />
-        </div>
-      </div>
-      <div class="field">
         <label class="label">Tipo</label>
         <div class="control">
           <div class="select" :style="{width: '100%'}">
@@ -54,7 +48,6 @@ export default {
       form: {
         name: null,
         email: null,
-        password: null,
         type: null
       },
       userTypes: [
