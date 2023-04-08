@@ -29,6 +29,11 @@
       <div class="navbar-end">
         <div class="navbar-item">
           <div class="buttons">
+            <button class="button" @click="$router.push({ name: 'profile' })">
+              <span class="icon is-small">
+                <i class="fas fa-user"></i>
+              </span>
+            </button>
             <button class="button is-primary" :class="{ 'is-loading': processing }" :disabled
                 ="processing" @click="logout">
               <strong>Terminar Sessão</strong>

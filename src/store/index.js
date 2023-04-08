@@ -106,6 +106,7 @@ export default createStore({
         /**
          * Users
          */
+        authUser: (state) => state.user,
         users: (state) => state.users,
         usersTotal: (state) => state.totalUsers,
         usersWithoutService: (state) => state.users.filter(u => u.service === null && u.type !== 'admin')

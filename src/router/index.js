@@ -13,9 +13,19 @@ const router = createRouter({
       component: () => import('../views/Authentication/Login.vue'),
     },
     {
+      path: '/reset-password',
+      name: 'reset-password',
+      component: () => import('../views/Authentication/ResetPassword.vue'),
+    },
+    {
       path: '/dashboard',
       name: 'dashboard',
       component: () => import('../views/Dashboard.vue')
+    },
+    {
+      path: '/profile',
+      name: 'profile',
+      component: () => import('../views/Authentication/Profile.vue')
     },
     /**
      * Services
@@ -76,7 +86,7 @@ router.beforeEach((to, from, next) => {
     next('/dashboard')
   }
 
-  if(to.name === 'login') {
+  if(to.name === 'login' || to.name === 'reset-password') {
     if(sessionStorage.getItem('token')){
       next('/dashboard')
     } else {

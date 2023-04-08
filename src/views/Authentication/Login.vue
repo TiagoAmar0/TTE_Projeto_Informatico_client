@@ -7,7 +7,7 @@
             Plataforma TTE
           </h1>
         </div>
-        <form @submit.prevent="login">
+        <form @submit.prevent="login" v-if="!forgotPasswordForm">
           <div class="column">
             <div class="control has-icons-left">
               <input :disabled="processing" class="input is-small" type="email" placeholder="Email" v-model="email">
@@ -28,6 +28,28 @@
             <button :disabled="processing" :class="{ 'is-loading': processing }" class="button is-primary is-fullwidth" type="submit">
               Login
             </button>
+            <button class="button is-link is-light mt-2 is-fullwidth" @click="openForgotForm">Esqueci-me da senha</button>
+          </div>
+        </form>
+        <form @submit.prevent="forgotPassword" v-else>
+          <div v-if="!forgotFormSent">
+            <div class="column">
+              <div class="control has-icons-left">
+                <input :disabled="processing" class="input is-small" type="email" placeholder="Email" v-model="forgotPasswordEmail">
+                <span class="icon is-small is-left">
+              <i class="fas fa-envelope"></i>
+            </span>
+              </div>
+            </div>
+            <div class="column">
+              <button :disabled="processing" :class="{ 'is-loading': processing }" class="button is-primary is-fullwidth" type="submit">
+                Recuperar Senha
+              </button>
+              <button class="button is-link is-light mt-2  is-fullwidth" :disabled="processing" @click="backForgotForm">Voltar</button>
+            </div>
+          </div>
+          <div v-else style="text-align: center">
+                <p>Foi enviado um email para recuperar o acesso.</p>
           </div>
         </form>
       </div>
@@ -36,12 +58,17 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   data () {
     return {
       email: null,
       password: null,
-      processing: false
+      processing: false,
+      forgotPasswordForm: false,
+      forgotPasswordEmail: null,
+      forgotFormSent: false
     }
   },
   methods: {
@@ -54,11 +81,31 @@ export default {
           })
           .catch((error) => {
             this.password = null
-            // this.$toast.error(error.data.message)
+            this.$toast.error(error.data.message)
           })
           .finally(() => {
             this.processing = false
           })
+    },
+    forgotPassword(){
+      this.processing = true
+      axios.post(`/forgot-password`, { email: this.forgotPasswordEmail })
+          .then(() => {
+            this.forgotFormSent = true
+          })
+          .catch(error => console.log(error))
+          .finally(() => {
+            this.processing = false
+          })
+    },
+    openForgotForm(){
+      this.email = null;
+      this.password = null;
+      this.forgotPasswordForm = true;
+    },
+    backForgotForm(){
+      this.forgotPasswordForm = false;
+      this.forgotPasswordEmail = null
     }
   },
   mounted(){
