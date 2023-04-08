@@ -30,10 +30,9 @@ const app = createApp(App)
 const apiBaseUrl = import.meta.env.VITE_APP_API_BASE_URL
 const serverBaseUrl = import.meta.env.VITE_APP_SERVER_URL
 
-console.log(apiBaseUrl, serverBaseUrl)
-
 axios.defaults.baseURL = apiBaseUrl
 axios.defaults.headers.common['Accept'] = 'application/json'
+axios.defaults.withCredentials = true;
 
 app.config.globalProperties.$axios = axios
 app.config.globalProperties.$serverUrl = serverBaseUrl
