@@ -118,8 +118,8 @@ export default createStore({
         async login(context, credentials){
             try {
                 let response = await axios.post('/login', credentials)
-                axios.defaults.headers.common.Authorization = 'Bearer ' + response.data.token
-                sessionStorage.setItem('token', response.data.token)
+                axios.defaults.headers.common.Authorization = "Bearer " + response.data.access_token
+                sessionStorage.setItem('token', response.data.access_token)
 
             } catch(error) {
                 delete axios.defaults.headers.common.Authorization
