@@ -214,7 +214,7 @@ export default createStore({
             try{
                 let response = await axios.put("/services/" + params.service + '/users/' + params.user)
                 context.commit('updateUserAndService', response.data.data)
-                return response.data.message
+                return response.data
             } catch (error){
                 throw error
             }

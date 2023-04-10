@@ -6,9 +6,9 @@
         Voltar
       </button>
     </RouterLink>
-    <RouterLink :to="{ name: 'service.associate_nurse', params: { id: $route.params.id }}" >
+    <RouterLink :to="{ name: 'service.edit', params: { id: $route.params.id }}" >
       <button class="button is-primary">
-        Associar enfermeiro
+        Editar Serviço
       </button>
     </RouterLink>
     <service-nurses-table :nurses="service.users" @disassociate="disassociate"/>

@@ -50,11 +50,6 @@ const router = createRouter({
       name: 'service.edit',
       component: () => import('../views/Services/Edit.vue')
     },
-    {
-      path: '/services/:id/associate',
-      name: 'service.associate_nurse',
-      component: () => import('../views/Services/Associate.vue')
-    },
     /**
      * Users
      */
