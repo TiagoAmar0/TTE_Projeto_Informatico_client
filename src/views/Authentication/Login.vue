@@ -81,7 +81,7 @@ export default {
           })
           .catch((error) => {
             this.password = null
-            this.$toast.error(error.data.message)
+            this.$toast.error(error.response.data.message)
           })
           .finally(() => {
             this.processing = false
