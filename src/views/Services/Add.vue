@@ -37,9 +37,10 @@ export default {
   methods: {
     store(){
       this.$store.dispatch('storeService',this.form)
-          .then(() => {
+          .then(response => {
+            console.log(response)
             this.$toast.success('O serviço foi adicionado')
-            this.$router.push({ name: 'services' })
+            this.$router.push({ name: 'service.edit', params: { id: response.id }})
           })
           .catch(error => {
             if(error.hasOwnProperty('response'))

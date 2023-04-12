@@ -4,7 +4,7 @@ import axios from 'axios';
 
 export default createStore({
     state: {
-        user: null,
+        user: { type: 'admin' },
         services: [],
         totalServices: 0,
         users: [],
@@ -15,7 +15,7 @@ export default createStore({
          * Auth User
          */
         resetUser (state) {
-            state.user = null
+            state.user = { type: 'admin' }
         },
         setUser (state, loggedInUser) {
             state.user = loggedInUser
@@ -107,6 +107,7 @@ export default createStore({
          * Users
          */
         authUser: (state) => state.user,
+        authUserType: (state) => state.user.type,
         users: (state) => state.users,
         usersTotal: (state) => state.totalUsers,
         usersWithoutService: (state) => state.users.filter(u => u.service === null && u.type !== 'admin')
@@ -160,13 +161,15 @@ export default createStore({
             }
         },
         async refresh (context) {
-            let userPromise = context.dispatch('loadLoggedInUser')
-            let servicesPromise = context.dispatch('loadServices')
-            let usersPromise = context.dispatch('loadUsers')
+            await context.dispatch('loadLoggedInUser')
 
-            await userPromise
-            await servicesPromise
-            await usersPromise
+            if(context.state.user.type === 'admin') {
+                let servicesPromise = context.dispatch('loadServices')
+                let usersPromise = context.dispatch('loadUsers')
+
+                await servicesPromise
+                await usersPromise
+            }
         },
 
         /**
@@ -214,7 +217,7 @@ export default createStore({
             try{
                 let response = await axios.put("/services/" + params.service + '/users/' + params.user)
                 context.commit('updateUserAndService', response.data.data)
-                return response.data.message
+                return response.data
             } catch (error){
                 throw error
             }

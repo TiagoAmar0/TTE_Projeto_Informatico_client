@@ -18,11 +18,14 @@
           Dashboard
         </RouterLink>
 
-        <RouterLink :to="{ name: 'services' }" class="navbar-item">
+        <RouterLink :to="{ name: 'services' }" class="navbar-item" v-if="user.type === 'admin'">
           Serviços
         </RouterLink>
-        <RouterLink :to="{ name: 'users' }" class="navbar-item">
+        <RouterLink :to="{ name: 'users' }" class="navbar-item" v-if="user.type === 'admin'">
           Utilizadores
+        </RouterLink>
+        <RouterLink :to="{ name: 'service.show', params: { id: user.service_id } }" class="navbar-item" v-if="user.type === 'lead-nurse' && user.hasOwnProperty('service_id') && user.service_id">
+          O meu Serviço
         </RouterLink>
       </div>
 
@@ -52,6 +55,11 @@ export default {
     return {
       show: false,
       processing: false
+    }
+  },
+  computed: {
+    user(){
+      return this.$store.getters.authUser
     }
   },
   methods: {
