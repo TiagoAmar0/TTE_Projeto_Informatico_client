@@ -20,6 +20,7 @@ import store from './store'
  */
 import './assets/main.css'
 import 'bulma/css/bulma.min.css'
+import '@creativebulma/bulma-tooltip/dist/bulma-tooltip.min.css'
 import '@fortawesome/fontawesome-free/css/fontawesome.min.css'
 import '@fortawesome/fontawesome-free/css/solid.min.css'
 import '@fortawesome/fontawesome-free/css/brands.min.css'
@@ -33,6 +34,19 @@ const serverBaseUrl = import.meta.env.VITE_APP_SERVER_URL
 axios.defaults.baseURL = apiBaseUrl
 axios.defaults.headers.common['Accept'] = 'application/json'
 axios.defaults.withCredentials = true;
+
+// Interceptor do status 401
+axios.interceptors.response.use(
+    response => response,
+    error => {
+        if(error.response && error.response.status === 401) {
+            sessionStorage.removeItem('token')
+            router.push({ name: 'login' })
+        }
+
+        return Promise.reject(error)
+    }
+)
 
 app.config.globalProperties.$axios = axios
 app.config.globalProperties.$serverUrl = serverBaseUrl

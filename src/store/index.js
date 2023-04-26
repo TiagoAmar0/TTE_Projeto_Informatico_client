@@ -8,7 +8,7 @@ export default createStore({
         services: [],
         totalServices: 0,
         users: [],
-        totalUsers: 0
+        totalUsers: 0,
     },
     mutations: {
         /**
