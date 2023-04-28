@@ -16,7 +16,7 @@
           <td>{{ schedule.end }}</td>
           <td>{{ schedule.draft ? 'Rascunho' : 'Lançado' }}</td>
           <td>
-            <button class="button is-primary mx-1" @click="$router.push({ name: 'service.show', params: {id: schedule.service_id,  schedule: schedule.id }})">
+            <button class="button is-primary mx-1" @click="$router.push({ name: 'service.schedules.show', params: {id: schedule.service_id,  schedule: schedule.id }})">
               <i class="fas fa-eye"></i>
             </button>
             <button class="button is-warning mx-1" @click="$router.push({ name: 'service.schedules.edit', params: { id: schedule.service_id, schedule: schedule.id }})">

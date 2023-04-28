@@ -61,6 +61,11 @@ const router = createRouter({
       component: () => import('../views/Services/Schedules/Add.vue')
     },
     {
+      path: '/services/:id/schedules/:schedule',
+      name: 'service.schedules.show',
+      component: () => import('../views/Services/Schedules/Show.vue')
+    },
+    {
       path: '/services/:id/schedules/:schedule/edit',
       name: 'service.schedules.edit',
       component: () => import('../views/Services/Schedules/Edit.vue')

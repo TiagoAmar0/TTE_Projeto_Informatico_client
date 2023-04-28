@@ -1,6 +1,6 @@
 <template>
   <DashboardLayout title="Adicionar turnos">
-    <div>
+    <div class="my-2">
       <VueDatePicker
           v-model="date_range"
           range
@@ -16,38 +16,25 @@
         <thead>
           <tr>
             <td></td>
-            <td v-for="date in dates_in_range">
-              <div class="icon-text" v-if="date.nurses_total < total_nurses_required">
-                <span class="icon has-text-warning has-tooltip-arrow has-tooltip-multiline has-tooltip-bottom" data-tooltip="Poucos enfermeiros associados">
-                  <i class="fas fa-exclamation-triangle"></i>
-                </span>
-              </div>
+            <td v-for="date in dates_in_range" :class="{'is-warning': date.day_of_week === 0 || date.day_of_week === 6}">
               <div v-for="shift in date.possible_shifts">
-                <div class="icon-text" v-if="shift.filled < shift.nurses_qty">
-                <span
-                    class="icon has-text-warning has-tooltip-arrow has-tooltip-multiline has-tooltip-bottom"
-                    :data-tooltip='"O turno " + shift.name + " tem poucos enfermeiros associados" '>
-                  <i class="fas fa-exclamation-triangle"></i>
-                </span>
-                </div>
+                Turno {{ shift.name }}: {{ shift.filled }}
+                <br>
               </div>
-
-
-              ({{ date.nurses_total }}/{{ total_nurses_required }})
-              <br>
-              {{ date.date }}
-
+              <u><strong>{{ days_of_the_week[date.day_of_week]}}
+                <br>
+                {{ date.date }}</strong></u>
             </td>
           </tr>
         </thead>
         <tbody>
           <tr v-for="(user, user_index) in service.users">
             <td class="is-fullwidth">{{ user.name }} ({{ user.total_hours }} horas)</td>
-            <td v-for="date_index in dates_in_range.length">
+            <td v-for="date_index in dates_in_range.length" :class="{'is-warning': dates_in_range[date_index - 1].day_of_week === 0 ||  dates_in_range[date_index - 1].day_of_week === 6}">
               <div class="select">
                 <select
                     v-model="dates_in_range[date_index - 1].nurses[user_index].shift"
-                    @change="handleShiftValueChange(dates_in_range[date_index - 1].nurses[user_index].id, date_index - 1)">
+                    @change="updateUserTotalHoursAndNursesInDay(dates_in_range[date_index - 1].nurses[user_index].id, date_index - 1)">
                   <option :value="null">-</option>
                   <option v-for="shift in dates_in_range[date_index - 1].possible_shifts.filter(s => s.show === true)" :value="shift.id">
                     {{ shift.name }}
@@ -61,6 +48,9 @@
       <button class="button is-success mx-1" @click="submitSchedule(false)">
         Submeter
       </button>
+      <button class="button is-secondary mx-1" @click="submitSchedule(true)">
+        Guardar Rascunho
+      </button>
     </div>
   </DashboardLayout>
 </template>
@@ -71,8 +61,6 @@ import DashboardLayout from "@/layouts/DashboardLayout.vue"
 import axios from "axios";
 import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css'
-import { reactive } from '@vue/reactivity'
-import { watchEffect } from "vue";
 
 export default {
   name: 'service-add-shifts',
@@ -80,10 +68,11 @@ export default {
   data(){
     return {
       date_range: null,
+      days_of_the_week: ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'],
       dates_in_range_past: [],
       shifts_to_users: [],
+      already_submited: false,
       total_shift_nurses: 0,
-      already_saved: false,
       interval: null,
       service: {
         users: [],
@@ -96,40 +85,46 @@ export default {
       clearInterval(this.interval)
       next()
     },
-    handleShiftValueChange(user_id, date_index){
-      let user = this.service.users.find(u => u.id === user_id)
-      user.total_hours = 0;
+    updateUserTotalHoursAndNursesInDay(userId, dateIndex){
+      const user = this.service.users.find(user => user.id === userId);
 
-      let total_nurse_hours = 0;
-      // Update nurse hours
-      for(let i = 0; i < this.dates_in_range.length; i++){
-        for(let j = 0; j < this.dates_in_range[i].nurses.length; j++){
-          if(this.dates_in_range[i].nurses[j].id === user.id && this.dates_in_range[i].nurses[j].shift){
-            let shift = this.dates_in_range[i].possible_shifts.find(s => s.id === this.dates_in_range[i].nurses[j].shift)
-            total_nurse_hours += shift.minutes / 60
-          }
+      user.total_hours = this.getTotalNurseHoursForUser(user);
+
+      this.resetPossibleShiftsForDay(dateIndex);
+
+      this.dates_in_range[dateIndex].nurses_total = this.updatePossibleShiftsForDay(dateIndex);
+    },
+    resetPossibleShiftsForDay(dateIndex){
+      this.dates_in_range[dateIndex].possible_shifts = this.dates_in_range[dateIndex].possible_shifts.map(shift => ({
+        ...shift,
+        filled: 0
+      }));
+    },
+    getTotalNurseHoursForUser(user){
+      let totalHours = 0;
+
+      this.dates_in_range.forEach(date => {
+        const nurse = date.nurses.find(nurse => nurse.id === user.id && nurse.shift);
+        if (nurse) {
+          const shift = date.possible_shifts.find(shift => shift.id === nurse.shift);
+          totalHours += shift.minutes / 60;
         }
-      }
+      });
 
-      user.total_hours = total_nurse_hours
+      return totalHours;
+    },
+    updatePossibleShiftsForDay(dateIndex){
+      let nursesTotal = 0;
 
-      // Reset nurses set in given day
-      let nurses_total = 0;
-      this.dates_in_range[date_index].possible_shifts = this.dates_in_range[date_index].possible_shifts.map(s => {
-        return {
-          ...s,
-          filled: 0
+      this.dates_in_range[dateIndex].nurses.forEach(nurse => {
+        if (nurse.shift) {
+          nursesTotal++;
+          const shift = this.dates_in_range[dateIndex].possible_shifts.find(shift => shift.id === nurse.shift);
+          shift.filled++;
         }
-      })
+      });
 
-      for(let i = 0; i < this.dates_in_range[date_index].nurses.length; i++){
-        if(this.dates_in_range[date_index].nurses[i].shift){
-          nurses_total++
-          let shift = this.dates_in_range[date_index].possible_shifts.find(s => s.id === this.dates_in_range[date_index].nurses[i].shift)
-          shift.filled++
-        }
-      }
-      this.dates_in_range[date_index].nurses_total = nurses_total;
+      return nursesTotal;
     },
     submitSchedule(draft, auto){
         // Insert new schedule
@@ -140,7 +135,6 @@ export default {
         })
           .then(response => {
             this.$toast.success(response.data.message)
-            this.already_saved = true
             if(!auto)
               this.$router.push({ name: 'service.schedules', params: { id: this.$route.params.id } })
             else
@@ -149,6 +143,9 @@ export default {
           .catch(error => {
             if(!auto)
               this.$toast.error(error.response.data.message)
+          })
+          .finally(() => {
+            clearInterval(this.interval)
           })
     }
   },
@@ -161,77 +158,43 @@ export default {
 
       return 0
     },
-    dates_in_range(){
-      if(this.date_range){
-        let start = new Date(
-            this.date_range[0].getFullYear(),
-            this.date_range[0].getMonth(),
-            this.date_range[0].getDate(),
-            this.date_range[0].getHours(),
-            this.date_range[0].getMinutes(),
-            this.date_range[0].getSeconds()
-        )
-        let end = new Date(
-            this.date_range[1].getFullYear(),
-            this.date_range[1].getMonth(),
-            this.date_range[1].getDate(),
-            this.date_range[1].getHours(),
-            this.date_range[1].getMinutes(),
-            this.date_range[1].getSeconds()
-        )
+    dates_in_range() {
+      if (!this.date_range) {
+        this.dates_in_range_past = [];
+        return [];
+      }
 
-        let range = []
-        let dates_inserted = []
-        while (start <=  end) {
+      const [start, end] = this.date_range;
+      const options = { timeZone: 'Europe/Lisbon' };
+      const startDate = new Date(start.toLocaleString('en-US', options));
+      startDate.setUTCHours(0, 0, 0, 0);
+      const endDate = new Date(end.toLocaleString('en-US', options));
+      endDate.setUTCHours(0, 0, 0, 0);
+      const range = [];
 
-          let new_date = start.toLocaleDateString('pt-PT', {day: '2-digit', month: '2-digit'})
-          let new_date_formatted = start.toLocaleDateString('pt-PT', {day: '2-digit', month: '2-digit', year: 'numeric'})
+      for (let timestamp = startDate.valueOf(); timestamp <= endDate.valueOf(); timestamp += 86400000) {
+        const date = new Date(timestamp);
+        const dateFormatted = date.toLocaleDateString('pt-PT', { day: '2-digit', month: '2-digit', year: 'numeric' });
 
-          // Check if date is already in range
-          let index = null;
-          for(let i = 0; i < this.dates_in_range_past.length; i++) {
-            if (this.dates_in_range_past[i].date === new_date) {
-              index = i;
-              break;
-            }
-          }
-
-          // If date is not in range, insert new object
-          if(!index){
-            range.push({
-              date: new_date,
-              date_formatted: new_date_formatted,
-              nurses_total: 0,
-              possible_shifts: this.service.shifts.map(s => {
-                return { ...s, filled: 0, show: true}
-              }),
-              nurses: this.service.users.map(u => {
-                return {
-                  id: u.id,
-                  shift: null
-                }
-              })
-            });
-          } else {
-            // else push old object
-            range.push(this.dates_in_range_past[index])
-          }
-
-          dates_inserted.push(new_date)
-
-          start.setDate(start.getDate() + 1);
+        const existingDateIndex = this.dates_in_range_past.findIndex(d => d.date === dateFormatted);
+        if (existingDateIndex !== -1) {
+          range.push(this.dates_in_range_past[existingDateIndex]);
+          continue;
         }
 
-        // Clean dates that are outside of range
-        range = range.filter(d => {
-          return dates_inserted.find(i_d => i_d === d.date)
-        })
-
-        this.dates_in_range_past = range
-        return range
+        range.push({
+          date: dateFormatted,
+          date_formatted: date.toLocaleDateString('pt-PT', { day: '2-digit', month: '2-digit' }),
+          day_of_week: date.getDay(),
+          nurses_total: 0,
+          possible_shifts: this.service.shifts.map(s => ({ ...s, filled: 0, show: true })),
+          nurses: this.service.users.map(u => ({ id: u.id, shift: null })),
+        });
       }
-      this.dates_in_range_past = []
-      return [];
+
+      this.dates_in_range_past = range;
+
+      return range;
     }
   },
   mounted(){
@@ -250,10 +213,13 @@ export default {
         .catch(error => console.log(error))
 
       this.interval = setInterval(() => {
-        if(this.date_range && !this.already_saved){
+        if(this.date_range && !this.already_submited){
           this.submitSchedule(true, true)
         }
       }, 30000)
+  },
+  beforeUnmount(){
+    clearInterval(this.interval)
   },
   watch:{
   }
