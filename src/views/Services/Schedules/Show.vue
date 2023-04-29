@@ -9,7 +9,7 @@
         <tr>
           <td></td>
           <td v-for="date in dates_in_range">
-            <div v-for="shift in date.possible_shifts">
+            <div v-for="shift in schedule.shifts">
               Turno {{ shift.name }}: {{ shift.filled }}
               <br>
             </div>
@@ -75,23 +75,6 @@ export default {
           date_formatted: date.toLocaleDateString('pt-PT', { day: '2-digit', month: '2-digit' }),
           day_of_week: date.getDay(),
           nurses_total: 0,
-          possible_shifts: this.schedule.shifts.map((s) => {
-            return {
-              ...s,
-              filled: this.schedule.user_shifts.reduce((acc, us) => {
-                if (us.date !== dateFormatted)
-                  return acc
-
-                let shift = this.schedule.shifts.find(sh => sh.id === us.shift_id)
-                if (shift.name === s.name)
-                  return acc + 1
-
-                return acc
-
-              }, 0),
-              show: true
-            };
-          }),
           nurses: this.schedule.users.map((u) => {
             let user = {
               id: u.id,
