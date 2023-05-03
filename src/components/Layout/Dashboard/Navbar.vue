@@ -27,6 +27,9 @@
         <RouterLink :to="{ name: 'service.show', params: { id: user.service_id } }" class="navbar-item" v-if="user.type === 'lead-nurse' && user.hasOwnProperty('service_id') && user.service_id">
           O meu Serviço
         </RouterLink>
+        <RouterLink :to="{ name: 'swaps.propose' }" class="navbar-item" v-if="user.type !== 'administrator' && user.hasOwnProperty('service_id') && user.service_id">
+          Pedir Troca
+        </RouterLink>
         <RouterLink :to="{ name: 'service.schedules', params: { id: user.service_id } }" class="navbar-item" v-if="user.type === 'lead-nurse' && user.hasOwnProperty('service_id') && user.service_id">
           Horários
         </RouterLink>

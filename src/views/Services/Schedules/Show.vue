@@ -86,8 +86,7 @@ export default {
             });
 
             if (schedule_record) {
-              let shift = this.schedule.shifts.find(s => s.id = schedule_record.shift_id)
-              user.shift = shift.name;
+              user.shift = schedule_record.shift.name;
             }
 
             return user;
@@ -112,8 +111,7 @@ export default {
                 if(us.user_id !== u.id)
                   return acc
 
-                let shift = this.schedule.shifts.find(s => s.id === us.shift_id)
-                return acc + (shift.minutes/60)
+                return acc + (us.shift.minutes/60)
               }, 0),
             }
           })
