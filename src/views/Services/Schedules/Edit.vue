@@ -16,20 +16,24 @@
         <thead>
         <tr>
           <td></td>
-          <td v-for="date in dates_in_range" :class="{'is-warning': date.day_of_week === 0 || date.day_of_week === 6}">
+          <td v-for="(date, i) in dates_in_range" :class="{'is-warning': date.day_of_week === 0 || date.day_of_week === 6}">
             <div v-for="shift in date.possible_shifts">
-              Turno {{ shift.name }}: {{ shift.filled }}
+              {{ shift.name }}: {{ shift.filled }}
               <br>
             </div>
-            <u><strong>{{ days_of_the_week[date.day_of_week]}}
+            <u><strong>
+              <span v-if="i === 0 || dates_in_range[i-1].month !== dates_in_range[i].month">
+                {{ date.month.charAt(0).toUpperCase() + date.month.slice(1).replace('.', '')}}
+              </span><br>
+              {{ date.day }}
               <br>
-              {{ date.date }}</strong></u>
+              {{ days_of_the_week[date.day_of_week]}}</strong></u>
           </td>
         </tr>
         </thead>
         <tbody>
         <tr v-for="(user, user_index) in schedule.users">
-          <td class="is-fullwidth">{{ user.name }} ({{ user.total_hours }} horas)</td>
+          <td class="is-narrow">{{ user.name }} ({{ user.total_hours }} horas)</td>
           <td v-for="date_index in dates_in_range.length" :class="{'is-warning': dates_in_range[date_index - 1].day_of_week === 0 ||  dates_in_range[date_index - 1].day_of_week === 6}">
             <div class="select">
               <select
@@ -72,7 +76,7 @@ export default {
       schedule: null,
       interval: null,
       dates_in_range_past: [],
-      days_of_the_week: ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'],
+      days_of_the_week: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'],
       shifts_to_users: [],
       total_shift_nurses: 0,
       service: {
@@ -186,6 +190,8 @@ export default {
           date: dateFormatted,
           date_formatted: date.toLocaleDateString('pt-PT', { day: '2-digit', month: '2-digit' }),
           day_of_week: date.getDay(),
+          month: date.toLocaleDateString('pt-PT', { month: "short" }),
+          day: date.toLocaleDateString('pt-PT', { day: "numeric" }),
           nurses_total: 0,
           possible_shifts: this.schedule.shifts.map((s) => {
             return {

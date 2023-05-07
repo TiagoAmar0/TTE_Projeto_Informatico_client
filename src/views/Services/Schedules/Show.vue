@@ -8,21 +8,25 @@
         <thead>
         <tr>
           <td></td>
-          <td v-for="date in dates_in_range">
-            <div v-for="shift in schedule.shifts">
-              Turno {{ shift.name }}: {{ shift.filled }}
+          <td v-for="(date, i) in dates_in_range" class="is-narrow" :class="{'is-warning': date.day_of_week === 0 || date.day_of_week === 6}">
+            <div v-for="shift in date.shifts">
+              {{ shift.name }}: {{ shift.filled }}
               <br>
             </div>
-            <u><strong>{{ days_of_the_week[date.day_of_week]}}
+            <u><strong>
+              <span v-if="i === 0 || dates_in_range[i-1].month !== dates_in_range[i].month">
+                {{ date.month.charAt(0).toUpperCase() + date.month.slice(1).replace('.', '')}}
+              </span><br>
+            {{ date.day }}
             <br>
-            {{ date.date }}</strong></u>
+              {{ days_of_the_week[date.day_of_week]}}</strong></u>
           </td>
         </tr>
         </thead>
         <tbody>
         <tr v-for="(user, user_index) in schedule.users">
-          <td class="is-fullwidth">{{ user.name }} ({{ user.total_hours }} horas)</td>
-          <td v-for="date_index in dates_in_range.length">
+          <td class="is-narrow">{{ user.name }} ({{ user.total_hours }} horas)</td>
+          <td v-for="date_index in dates_in_range.length" :class="{'is-warning': dates_in_range[date_index - 1].day_of_week === 0 || dates_in_range[date_index - 1].day_of_week === 6}">
             {{ dates_in_range[date_index - 1].nurses[user_index].shift ? dates_in_range[date_index - 1].nurses[user_index].shift : '-'}}
           </td>
         </tr>
@@ -42,10 +46,29 @@ export default {
   data(){
     return {
       schedule: [],
-      days_of_the_week: ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'],
-
+      days_of_the_week: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'],
       date_range: null
     }
+  },
+  methods: {
+    getShiftsTotals(range){
+      return range.map(day => {
+        return {
+          ...day,
+          shifts: this.schedule.shifts.map(shift => {
+            return {
+              ...shift,
+              filled: this.schedule.user_shifts.reduce((acc, us) => {
+                if (us.shift_id === shift.id && us.date === day.date)
+                  return acc + 1
+
+                return acc
+              }, 0)
+            }
+          })
+        }
+      })
+    },
   },
   computed: {
     dates_in_range() {
@@ -73,6 +96,8 @@ export default {
         range.push({
           date: dateFormatted,
           date_formatted: date.toLocaleDateString('pt-PT', { day: '2-digit', month: '2-digit' }),
+          month: date.toLocaleDateString('pt-PT', { month: "short" }),
+          day: date.toLocaleDateString('pt-PT', { day: "numeric" }),
           day_of_week: date.getDay(),
           nurses_total: 0,
           nurses: this.schedule.users.map((u) => {
@@ -94,7 +119,7 @@ export default {
         });
       }
 
-      return range;
+      return this.getShiftsTotals(range);
     }
   },
   mounted(){

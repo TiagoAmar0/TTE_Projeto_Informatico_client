@@ -4,25 +4,22 @@
       <thead>
         <tr>
           <td>Nome</td>
-          <td>Turno a pedir troca</td>
-          <td></td>
+          <td>Opções</td>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="swap in swaps">
-          <td>{{ swap.user.name }}</td>
-          <td>{{ swap.shift.name }}</td>
+        <tr v-for="(user, user_id) in users" :key="user_id">
+          <td>{{ user }}</td>
           <td>
-            <button class="button is-info">Pedir Troca</button>
+            <span v-for="swap in filteredSwaps(user_id)">
+              <input type="checkbox" v-model="swap.checked" @input="handleCheckChange(swap)">
+              {{ swap.rest
+                ? `Folgar hoje e pagar em ${swap.date} no turno ${swap.shift_name}`
+                : `Troca direta para o turno ${swap.shift_name} de hoje` }}
+              <br>
+            </span>
           </td>
         </tr>
-      <tr v-for="user in users_with_dayoff">
-        <td>{{ user.name }}</td>
-        <td>Folga</td>
-        <td>
-          <button class="button is-info">Pedir Troca</button>
-        </td>
-      </tr>
       </tbody>
     </table>
   </div>
@@ -31,6 +28,28 @@
 <script>
 export default {
   name: 'swap-table',
-  props: ['swaps', 'users_with_dayoff']
+  props: ['swaps', 'users'],
+  data(){
+    return {
+      available_swaps: []
+    }
+  },
+  methods: {
+    handleCheckChange(swap){
+      if(!swap.checked) {
+        this.$emit('checkSwap', swap)
+      } else {
+        this.$emit('uncheckSwap', swap)
+      }
+    },
+    filteredSwaps(user_id){
+      return this.swaps.filter(swap => swap.user_id === parseInt(user_id)).map(s => {
+        return {
+          ...s,
+          checked: false
+        }
+      })
+    }
+  },
 }
 </script>

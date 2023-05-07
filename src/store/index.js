@@ -9,6 +9,8 @@ export default createStore({
         totalServices: 0,
         users: [],
         totalUsers: 0,
+        swapsProposedToUser: [],
+        swapsProposedByUser: []
     },
     mutations: {
         /**
@@ -19,6 +21,15 @@ export default createStore({
         },
         setUser (state, loggedInUser) {
             state.user = loggedInUser
+        },
+        /**
+         * Swaps
+         */
+        setSwapsProposedByUser(state, swaps){
+           state.swapsProposedByUser  = swaps ? swaps : []
+        },
+        setSwapsProposedToUser(state, swaps){
+            state.swapsProposedToUser  = swaps ? swaps : []
         },
         /**
          * Services
@@ -106,6 +117,8 @@ export default createStore({
         /**
          * Users
          */
+        swapsProposedByUser: (state) => state.swapsProposedByUser,
+        swapsProposedToUser: (state) => state.swapsProposedToUser,
         authUser: (state) => state.user,
         authUserType: (state) => state.user.type,
         users: (state) => state.users,
@@ -160,8 +173,24 @@ export default createStore({
                 throw error
             }
         },
+        async loadSwapsProposedByUser(context){
+            let response = await axios.get('/swaps/user-proposed')
+            context.commit('setSwapsProposedByUser', response.data.data)
+        },
+        async loadSwapsProposedToUser(context){
+            let response = await axios.get('/swaps/proposed-to-user')
+            context.commit('setSwapsProposedToUser', response.data.data)
+        },
         async refresh (context) {
             await context.dispatch('loadLoggedInUser')
+
+            if(context.state.user.type == 'nurse'){
+                let swapsProposedByUserPromise = context.dispatch('loadSwapsProposedByUser')
+                let swapsProposedToUserPromise = context.dispatch('loadSwapsProposedToUser')
+
+                await swapsProposedByUserPromise
+                await swapsProposedToUserPromise
+            }
 
             if(context.state.user.type === 'admin') {
                 let servicesPromise = context.dispatch('loadServices')
