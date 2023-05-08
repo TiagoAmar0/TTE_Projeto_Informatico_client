@@ -1,17 +1,32 @@
 <template>
-  <DashboardLayout title="Dashboard">
-    <h1 class="is-size-4">Permissões: {{ user.type_normalized }}</h1>
-    <hr>
-    <swaps-proposed-by-user-table />
+  <DashboardLayout title="Dashboard" :show-card="false">
+
+    <div class="columns">
+      <div class="column is-one-fifth">
+        <div class="card">
+          <div class="card-content">
+          <h1 class="is-size-4">Permissões: {{ user.type_normalized }}</h1>
+          </div>
+        </div>
+      </div>
+      <div class="column is-two-fifths">
+        <swaps-proposed-by-user-table />
+      </div>
+      <div class="column is-two-fifths">
+        <swaps-proposed-to-user-table />
+      </div>
+    </div>
+
   </DashboardLayout>
 </template>
 
 <script>
 import DashboardLayout from "@/layouts/DashboardLayout.vue";
 import SwapsProposedByUserTable from "@/components/Swaps/SwapsProposedByUserTable.vue";
+import SwapsProposedToUserTable from "@/components/Swaps/SwapsProposedToUserTable.vue";
 
 export default {
-  components: {SwapsProposedByUserTable, DashboardLayout},
+  components: {SwapsProposedToUserTable, SwapsProposedByUserTable, DashboardLayout},
   layout: 'dashboard',
   computed: {
     user(){

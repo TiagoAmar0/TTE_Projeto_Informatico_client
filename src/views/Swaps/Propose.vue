@@ -12,17 +12,20 @@
       />
     </div>
     <div v-if="date">
-      <div v-if="available_swaps && user_shift">
-        <strong><u>Turno a realizar na data: {{ user_shift.shift.name }}</u></strong>
-        <hr>
-        <h1 class="is-size-3">Possíveis Trocas</h1>
+      <strong v-if="user_shift"><u>Turno a realizar na data: {{ user_shift.shift.name }}</u></strong>
+      <strong v-else><u>Turno a realizar na data: Folga</u></strong>
+      <hr>
+      <div v-if="available_swaps && available_swaps.length && user_shift">
+        <h1 class="is-size-4">Possíveis Trocas</h1>
 
       </div>
       <div v-else>
-        <h1 class="is-size-3">Não há trocas possíveis para esta data</h1>
+        <h1 class="is-size-4">Não há trocas possíveis para esta data</h1>
       </div>
-      <swap-table :users="users" :swaps="available_swaps" @checkSwap="checkSwap" @uncheckSwap="uncheckSwap"/>
-      <button class="button is-success" @click="submit">Submeter Pedidos</button>
+      <div v-if="available_swaps.length">
+        <swap-table  :users="users" :swaps="available_swaps" @checkSwap="checkSwap" @uncheckSwap="uncheckSwap"/>
+        <button class="button is-success" @click="submit">Submeter Pedidos</button>
+      </div>
     </div>
   </DashboardLayout>
 </template>
@@ -42,9 +45,23 @@ export default {
     return {
       date: null,
       user_shift: null,
-      available_swaps: null,
+      available_swaps: [],
       users: null,
       proposed_swaps: []
+    }
+  },
+  computed: {
+    formattedDate(){
+      if(!this.date)
+        return null
+
+      const year = this.date.getFullYear();
+      const month = this.date.getMonth();
+      const day = this.date.getDate();
+      const newDate = new Date(Date.UTC(year, month, day));
+      newDate.setUTCHours(0, 0, 0, 0);
+
+      return newDate.toLocaleDateString('pt-PT', {day: '2-digit', month: '2-digit', year: 'numeric'}).replaceAll('/', '-');
     }
   },
   mounted(){
@@ -55,9 +72,7 @@ export default {
       this.proposed_swaps.push(swap)
     },
     uncheckSwap(swap){
-      console.log('uncheck before', this.proposed_swaps)
       this.proposed_swaps = this.proposed_swaps.filter(s => !this.equalObjects(s, swap))
-      console.log('uncheck after', this.proposed_swaps)
     },
     equalObjects(obj1, obj2){
       for (let prop in obj1) {
@@ -79,17 +94,19 @@ export default {
         swaps: this.proposed_swaps
       })
           .then(response => {
-            console.log(response)
+            this.$toast.success(response.data.message)
+            this.$store.dispatch('refresh')
+            this.$router.push({name: 'dashboard'})
           })
           .catch(error => {
-            console.log(error)
+            this.$toast.error(error.response.data.message)
           })
     },
     handleDateChange(){
       if(this.date){
         axios.get('/user-shifts', {
           params: {
-            date: this.date
+            date: this.formattedDate
           }
         })
             .then(response => {

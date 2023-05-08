@@ -1,15 +1,16 @@
 <template>
   <main class="dashboard">
       <div>
-        <Navbar />
+        <Navbar/>
         <section class="section">
-          <div class="card">
+          <div class="card" v-if="showCard">
             <div class="card-content">
               <h1 class="is-size-3">{{ title }}</h1>
               <hr>
               <slot />
             </div>
           </div>
+          <slot v-else />
         </section>
       </div>
   </main>
@@ -21,7 +22,14 @@ import Navbar from "@/components/Layout/Dashboard/Navbar.vue";
 export default {
   name: 'Dashboard',
   components: {Navbar},
-  props: ['title']
+  props: {
+    title: String,
+    showCard: {
+      type: Boolean,
+      required: false,
+      default: true
+    },
+  }
 };
 </script>
 
