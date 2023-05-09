@@ -71,6 +71,14 @@ const router = createRouter({
       component: () => import('../views/Services/Schedules/Edit.vue')
     },
     /**
+     * Swaps
+     */
+    {
+      path: '/swaps/propose',
+      name: 'swaps.propose',
+      component: () => import('../views/Swaps/Propose.vue')
+    },
+    /**
      * Users
      */
     {
