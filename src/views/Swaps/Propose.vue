@@ -22,7 +22,7 @@
       <div v-else>
         <h1 class="is-size-4">Não há trocas possíveis para esta data</h1>
       </div>
-      <div v-if="available_swaps.length">
+      <div v-if="available_swaps && available_swaps.length">
         <swap-table  :users="users" :swaps="available_swaps" @checkSwap="checkSwap" @uncheckSwap="uncheckSwap"/>
         <button class="button is-success" @click="submit">Submeter Pedidos</button>
       </div>
@@ -96,7 +96,9 @@ export default {
           .then(response => {
             this.$toast.success(response.data.message)
             this.$store.dispatch('refresh')
-            this.$router.push({name: 'dashboard'})
+                .then(() => {
+                  this.$router.push({ name: 'dashboard' })
+                })
           })
           .catch(error => {
             this.$toast.error(error.response.data.message)
@@ -110,9 +112,11 @@ export default {
           }
         })
             .then(response => {
-              this.user_shift = response.data.user_shift
-              this.available_swaps = response.data.available_swaps
-              this.users = response.data.user_ids
+              if(response.data){
+                this.user_shift = response.data.user_shift
+                this.available_swaps = response.data.available_swaps
+                this.users = response.data.user_ids
+              }
             })
             .catch(error => console.log(error))
       }
