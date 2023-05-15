@@ -17,7 +17,6 @@ export default createStore({
          * Auth User
          */
         resetUser (state) {
-            state.user = null
             state.swapsProposedByUser = []
             state.swapsProposedToUser = []
         },
