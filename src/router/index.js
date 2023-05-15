@@ -106,8 +106,6 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  console.log(from.name, to.name)
-
   if(to.name === 'login' || to.name === 'reset-password') {
     if(sessionStorage.getItem('token'))
       sessionStorage.removeItem('token')
@@ -117,7 +115,7 @@ router.beforeEach((to, from, next) => {
   }
 
   if(!sessionStorage.getItem('token')){
-    // next({ name: 'login' })
+    next({ name: 'login' })
     return
   }
 
