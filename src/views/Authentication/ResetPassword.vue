@@ -7,36 +7,34 @@
             Plataforma TTE
           </h1>
         </div>
-        <form @submit.prevent="resetPassword">
-          <div class="column">
-            <div class="control has-icons-left">
-              <input :disabled="processing" class="input is-small" type="password" placeholder="Senha" v-model="password">
-              <span class="icon is-small is-left">
-              <i class="fas fa-key"></i>
-            </span>
-            </div>
-          </div>
-          <div class="column">
-            <div class="control has-icons-left">
-              <input :disabled="processing" class="input is-small" type="password" placeholder="Confirmar Senha" v-model="password_confirmation">
-              <span class="icon is-small is-left">
+        <div class="column">
+          <div class="control has-icons-left">
+            <input :disabled="processing" class="input is-small" type="password" placeholder="Senha" v-model="password">
+            <span class="icon is-small is-left">
             <i class="fas fa-key"></i>
           </span>
-            </div>
           </div>
-          <div class="column">
-            <button :disabled="processing" :class="{ 'is-loading': processing }" class="button is-primary is-fullwidth" type="submit">
-              Definir Senha
-            </button>
-            <button
-                :disabled="processing"
-                :class="{ 'is-loading': processing }"
-                class="button is-link is-light mt-2 is-fullwidth"
-                @click="$router.push({ name: 'login' })">
-              Voltar
-            </button>
+        </div>
+        <div class="column">
+          <div class="control has-icons-left">
+            <input :disabled="processing" class="input is-small" type="password" placeholder="Confirmar Senha" v-model="password_confirmation">
+            <span class="icon is-small is-left">
+          <i class="fas fa-key"></i>
+        </span>
           </div>
-        </form>
+        </div>
+        <div class="column">
+          <button :disabled="processing" :class="{ 'is-loading': processing }" class="button is-primary is-fullwidth" @click="resetPassword">
+            Definir Senha
+          </button>
+          <button
+              :disabled="processing"
+              :class="{ 'is-loading': processing }"
+              class="button is-link is-light mt-2 is-fullwidth"
+              @click="$router.push({ name: 'login' })">
+            Voltar
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -70,11 +68,15 @@ export default {
     },
   },
   mounted(){
-    if(!this.$route.query.token)
-      this.$router.push('/login')
+    if(!this.$route.query.token) {
+      this.$router.push({ name: 'login' })
+    }
 
-    if(this.$store.state.user)
-      this.$router.push('/dashboard')
+    if(this.$store.state.user) {
+      this.$router.push({name: 'dashboard'})
+
+      console.log(this.$store.state.user)
+    }
   }
 }
 </script>
