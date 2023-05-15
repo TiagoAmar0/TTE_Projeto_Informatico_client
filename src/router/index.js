@@ -5,6 +5,7 @@ const router = createRouter({
   routes: [
     {
       path: '/',
+      redirect: { name: 'login' },
       name: 'index',
     },
     {
@@ -105,21 +106,18 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  if(to.name === 'index'){
-    next('/dashboard')
-  }
+  console.log(from.name, to.name)
 
   if(to.name === 'login' || to.name === 'reset-password') {
-    if(sessionStorage.getItem('token')){
-      next('/dashboard')
-    } else {
-      next()
-    }
+    if(sessionStorage.getItem('token'))
+      sessionStorage.removeItem('token')
+
+    next()
     return
   }
 
   if(!sessionStorage.getItem('token')){
-    next('/login')
+    // next({ name: 'login' })
     return
   }
 

@@ -4,7 +4,7 @@ import axios from 'axios';
 
 export default createStore({
     state: {
-        user: { type: 'admin' },
+        user: {},
         services: [],
         totalServices: 0,
         users: [],
@@ -17,7 +17,7 @@ export default createStore({
          * Auth User
          */
         resetUser (state) {
-            state.user = { type: 'admin' }
+            state.user = {}
             state.swapsProposedByUser = []
             state.swapsProposedToUser = []
         },
