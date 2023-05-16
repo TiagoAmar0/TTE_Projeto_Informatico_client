@@ -18,13 +18,13 @@
                 {{ swap.target_user.name }}
               </td>
               <td>
-                {{ swap.target_shift_user.shift.name }} de {{ swap.target_shift_user.date }}
+                {{ swap.target_shift_user.shift.description }} de {{ swap.target_shift_user.date }}
               </td>
               <td>
                 {{
                   !swap.direct
-                  ? `Folga e fazer o turno ${swap.payment_shift_user.shift.name} de ${swap.payment_shift_user.date}`
-                  : `${swap.payment_shift_user.shift.name} de ${swap.payment_shift_user.date}`
+                  ? `Folga e fazer o turno ${swap.payment_shift_user.shift.description} de ${swap.payment_shift_user.date}`
+                  : `${swap.payment_shift_user.shift.description} de ${swap.payment_shift_user.date}`
                 }}
               </td>
               <td>
