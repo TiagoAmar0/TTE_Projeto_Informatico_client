@@ -2,7 +2,7 @@
   <DashboardLayout title="Dashboard" :show-card="false">
 
     <div class="columns">
-      <div class="column is-one-fifth">
+      <div class="column is-one-fifth" v-if="user">
         <div class="card">
           <div class="card-content">
           <h1 class="is-size-4">Permissões: {{ user.type_normalized }}</h1>

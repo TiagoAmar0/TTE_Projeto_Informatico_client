@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar is-fixed-top is-transparent" role="navigation" aria-label="main navigation">
+  <nav class="navbar is-fixed-top is-transparent" role="navigation" aria-label="main navigation" v-if="user">
     <div class="navbar-brand">
       <RouterLink :to="{ name: 'dashboard' }" class="navbar-item">
         <img src="@/assets/img/logo.png" height="253" style="max-height: 3rem;">
