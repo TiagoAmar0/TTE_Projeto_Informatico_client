@@ -93,7 +93,9 @@ export default {
           .then(() => {
             this.forgotFormSent = true
           })
-          .catch(error => console.log(error))
+          .catch(error => {
+            this.$toast.error(error.response.data.message)
+          })
           .finally(() => {
             this.processing = false
           })
@@ -110,7 +112,7 @@ export default {
   },
   mounted(){
    if(this.$store.state.user)
-     this.$router.push('/dashboard')
+     this.$router.push({ name: 'dashboard' })
   }
 }
 </script>
