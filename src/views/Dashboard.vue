@@ -17,6 +17,12 @@
       </div>
     </div>
 
+    <div class="columns">
+      <div class="column is-two-fifths">
+        <shifts-allocated-to-user-table />
+      </div>
+    </div>
+
   </DashboardLayout>
 </template>
 
@@ -24,9 +30,10 @@
 import DashboardLayout from "@/layouts/DashboardLayout.vue";
 import SwapsProposedByUserTable from "@/components/Swaps/SwapsProposedByUserTable.vue";
 import SwapsProposedToUserTable from "@/components/Swaps/SwapsProposedToUserTable.vue";
+import ShiftsAllocatedToUserTable from "@/components/ShiftsAllocatedToUserTable.vue";
 
 export default {
-  components: {SwapsProposedToUserTable, SwapsProposedByUserTable, DashboardLayout},
+  components: {ShiftsAllocatedToUserTable, SwapsProposedToUserTable, SwapsProposedByUserTable, DashboardLayout},
   layout: 'dashboard',
   computed: {
     user(){

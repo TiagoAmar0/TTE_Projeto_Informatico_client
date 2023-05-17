@@ -5,19 +5,19 @@
           v-model="date"
           format="dd-MM-yyyy"
           auto-apply
+          :min-date="min_date"
           ref="datePickerInput"
           @update:model-value="handleDateChange"
           :close-on-auto-apply="true"
           :enable-time-picker="false"
       />
     </div>
-    <div v-if="date">
-      <strong v-if="user_shift"><u>Turno a realizar na data: {{ user_shift.shift.name }}</u></strong>
-      <strong v-else><u>Turno a realizar na data: Folga</u></strong>
+    <div v-if="date && !error">
+      <span v-if="user_shift"><u>Turno a realizar na data: <strong>{{ user_shift.shift.description }}</strong></u></span>
+      <span v-else><u>Turno a realizar na data: <strong>Folga</strong></u></span>
       <hr>
       <div v-if="available_swaps && available_swaps.length && user_shift">
         <h1 class="is-size-4">Possíveis Trocas</h1>
-
       </div>
       <div v-else>
         <h1 class="is-size-4">Não há trocas possíveis para esta data</h1>
@@ -26,6 +26,9 @@
         <swap-table  :users="users" :swaps="available_swaps" @checkSwap="checkSwap" @uncheckSwap="uncheckSwap"/>
         <button class="button is-success" @click="submit">Submeter Pedidos</button>
       </div>
+    </div>
+    <div v-if="error">
+      <strong><u>Erro a processar pedido</u></strong>
     </div>
   </DashboardLayout>
 </template>
@@ -37,17 +40,18 @@ import '@vuepic/vue-datepicker/dist/main.css'
 import axios from "axios";
 import SwapTable from "@/components/Swaps/SwapTable.vue";
 
-
 export default {
   name: 'propose-swap',
-  components: {SwapTable, DashboardLayout, VueDatePicker },
+  components: { SwapTable, DashboardLayout, VueDatePicker },
   data(){
     return {
       date: null,
       user_shift: null,
       available_swaps: [],
       users: null,
-      proposed_swaps: []
+      proposed_swaps: [],
+      min_date: null,
+      error: false
     }
   },
   computed: {
@@ -66,6 +70,9 @@ export default {
   },
   mounted(){
     this.$refs.datePickerInput.openMenu()
+
+    let today = new Date();
+    this.min_date = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1);
   },
   methods: {
     checkSwap(swap){
@@ -106,6 +113,7 @@ export default {
     },
     handleDateChange(){
       if(this.date){
+        this.error = false
         axios.get('/user-shifts', {
           params: {
             date: this.formattedDate
@@ -118,7 +126,10 @@ export default {
                 this.users = response.data.user_ids
               }
             })
-            .catch(error => console.log(error))
+            .catch(error => {
+              this.error = true
+              this.$toast.error(error.response.data.message)
+            })
       }
     }
   }
