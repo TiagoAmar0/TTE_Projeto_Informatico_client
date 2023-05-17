@@ -42,7 +42,7 @@
     },
     computed: {
       userShifts(){
-        if(!this.$store.state.user)
+        if(!this.$store.state.user || !this.$store.state.user.shifts || !this.$store.state.user.shifts.length)
           return [];
 
         const shifts = this.$store.state.user.shifts;
