@@ -79,6 +79,16 @@ const router = createRouter({
       name: 'swaps.propose',
       component: () => import('../views/Swaps/Propose.vue')
     },
+    {
+      path: '/swaps/sent',
+      name: 'swaps.sent',
+      component: () => import('../views/Swaps/SwapsSent.vue')
+    },
+    {
+      path: '/swaps/received',
+      name: 'swaps.received',
+      component: () => import('../views/Swaps/SwapsReceived.vue')
+    },
     /**
      * Users
      */
@@ -101,7 +111,15 @@ const router = createRouter({
       path: '/users/:id/edit',
       name: 'user.edit',
       component: () => import('../views/Users/Edit.vue')
-    }
+    },
+    /**
+     * User Shifts
+     */
+    {
+      path: '/my-shifts',
+      name: 'user.shifts',
+      component: () => import('../views/Shifts/UserShiftsList.vue')
+    },
   ]
 })
 

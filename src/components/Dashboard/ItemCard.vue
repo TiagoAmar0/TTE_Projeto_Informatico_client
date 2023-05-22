@@ -1,5 +1,5 @@
 <template>
-  <div class="card">
+  <div class="card is-fullheight">
     <div class="card-content has-text-centered">
       <h1 v-if="title" class="is-size-4">{{ title }}</h1>
       <slot />
@@ -13,3 +13,9 @@ export default {
   props: ['title']
 }
 </script>
+
+<style>
+/*.card {*/
+/*  height: 10rem;*/
+/*}*/
+</style>

@@ -120,6 +120,8 @@ export default createStore({
          */
         swapsProposedByUser: (state) => state.swapsProposedByUser,
         swapsProposedToUser: (state) => state.swapsProposedToUser,
+        pendingSwapsProposedToUser: (state) => state.swapsProposedToUser.reduce((acc, swap) => swap.status === "Pendente" ? acc + 1 : acc, 0),
+        pendingSwapsProposedByUser: (state) => state.swapsProposedByUser.reduce((acc, swap) => swap.status === "Pendente" ? acc + 1 : acc, 0),
         authUser: (state) => state.user,
         authUserType: (state) => state.user.type,
         users: (state) => state.users,
