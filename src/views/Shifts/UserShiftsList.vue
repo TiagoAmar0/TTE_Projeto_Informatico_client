@@ -11,34 +11,15 @@
         :enable-time-picker="false"
     />
 
-    <div v-if="date" class='container'>
-      <div class="list has-hoverable-list-items has-overflow-ellipsis">
-        <div class="list-item" v-for="shift in userShifts">
-          <div class="list-item-content">
-            <div class="list-item-title is-flex is-justify-content-space-between">
-              <span>{{ shift.date }}</span>
-            </div>
-            <div class="list-item-description">
-              {{ shift.shift }}
-<!--              {{ swap.payment_shift_user.date }} : {{ swap.payment_shift_user.shift.description }} {{ '&#8594;' }} {{ swap.target_shift_user.shift.description }}-->
-<!--              <br>-->
-<!--              <div class="buttons are-small mt-1">-->
-<!--                <button :disabled="processing" class="button is-success" @click="approve(swap.id)">Aceitar</button>-->
-<!--                <button :disabled="processing" class="button is-danger" @click="reject(swap.id)">Rejeitar</button>-->
-<!--              </div>-->
-<!--            </div>-->
-<!--            <div class="list-item-description" v-else>-->
-<!--              {{ swap.target_shift_user.date }} : Folga {{ '&#8594;' }} {{ swap.target_shift_user.shift.description }}-->
-<!--              <br>-->
-<!--              {{ swap.payment_shift_user.date }} : {{ swap.payment_shift_user.shift.description }} {{ '&#8594;' }} Folga-->
-<!--              <br>-->
-<!--              <div class="buttons are-small mt-1">-->
-<!--                <button :disabled="processing" class="button is-success" @click="approve(swap.id)">Aceitar</button>-->
-<!--                <button :disabled="processing" class="button is-danger" @click="reject(swap.id)">Rejeitar</button>-->
-<!--              </div>-->
-            </div>
+    <div v-if="date" class="list has-hoverable-list-items has-overflow-ellipsis">
+      <div class="list-item" v-for="shift in userShifts">
+        <div class="list-item-content">
+          <div class="list-item-title is-flex is-justify-content-space-between">
+            <span>{{ shift.date }}</span>
           </div>
-
+          <div class="list-item-description">
+            {{ shift.shift }}
+          </div>
         </div>
       </div>
     </div>
@@ -96,19 +77,6 @@ export default {
           date: date,
           shift: 'Folga'
         }
-
-        // if (shifts[shift_index].date == date) {
-        //   shift_index++
-        //   return {
-        //     date: date,
-        //     shift: shifts[shift_index - 1].shift.description
-        //   }
-        // }
-        //
-        // return {
-        //   date: date,
-        //   shift: 'Folga'
-        // }
       })
     }
   },

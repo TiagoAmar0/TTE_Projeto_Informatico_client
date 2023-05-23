@@ -1,0 +1,76 @@
+<template>
+  <DashboardLayout title="Histórico de Trocas">
+    <div v-if="sorted_accepted_swaps && sorted_accepted_swaps.length"  class="list has-hoverable-list-items has-overflow-ellipsis">
+      <div class="list-item" v-for="swap in sorted_accepted_swaps">
+        <div class="list-item-content">
+          <div class="list-item-title is-flex is-justify-content-space-between">
+            <span>
+              {{ swap.proposing_user.name === authUserName ? 'Eu' : swap.proposing_user.name }}
+              {{ '&#8594;' }}
+              {{ swap.target_user.name === authUserName ? 'Eu' : swap.target_user.name }}</span>
+          </div>
+          <div class="list-item-description" v-if="swap.direct">
+            <u><strong>{{ swap.payment_shift_user.date }}</strong></u>
+            <br>
+            {{ swap.payment_shift_user.shift.description }} {{ '&#8594;' }} {{ swap.target_shift_user.shift.description }}
+          </div>
+          <div class="list-item-description" v-else>
+            <u><strong>{{ swap.target_shift_user.date }}</strong></u>
+            <br>
+            Folga {{ '&#8594;' }} {{ swap.target_shift_user.shift.description }}
+            <br>
+            <u><strong>{{ swap.payment_shift_user.date }}</strong></u>
+            <br>
+            {{ swap.payment_shift_user.shift.description }} {{ '&#8594;' }} Folga
+          </div>
+        </div>
+      </div>
+    </div>
+    <h1 v-else class="is-size-5">Não existem trocas aceites</h1>
+  </DashboardLayout>
+</template>
+
+<script>
+
+import axios from "axios";
+import DashboardLayout from "@/layouts/DashboardLayout.vue";
+import 'bulma-list/css/bulma-list.css'
+
+export default {
+  name: 'swaps-history',
+  components: { DashboardLayout },
+  data(){
+    return {
+      accepted_swaps: [],
+    }
+  },
+  methods: {
+    parseDate(date_string){
+      const [day, month, year] = date_string.split('/');
+      return new Date(`${year}-${month}-${day}`);
+    },
+  },
+  computed: {
+    authUserName(){
+      return this.$store.getters.authUser.name
+    },
+    sorted_accepted_swaps(){
+      if(!this.accepted_swaps || !this.accepted_swaps.length)
+        return []
+
+      return this.accepted_swaps.sort((a,b) => {
+        return this.parseDate(b.target_shift_user.date) - this.parseDate(a.target_shift_user.date);
+      })
+    }
+  },
+  mounted(){
+    axios.get('swaps/history')
+        .then(response => {
+          this.accepted_swaps = response.data.data
+        })
+        .catch(error => {
+          console.log(error)
+        })
+  }
+}
+</script>

@@ -1,6 +1,6 @@
 <template>
-  <div class="card is-fullheight">
-    <div class="card-content has-text-centered">
+  <div class="card">
+    <div :class="cardClass" >
       <h1 v-if="title" class="is-size-4">{{ title }}</h1>
       <slot />
     </div>
@@ -10,12 +10,21 @@
 <script>
 export default {
   name: 'item-card',
-  props: ['title']
+  props: ['title', 'is_dashboard'],
+  computed: {
+    cardClass(){
+      if(this.is_dashboard)
+        return 'card-content has-text-centered is-flex is-flex-direction-column is-justify-content-center is-align-items-center'
+
+      return 'card-content has-text-centered'
+    }
+  }
 }
 </script>
 
-<style>
+<style scoped>
 .card {
   height: 100%;
+  min-height: 9rem;
 }
 </style>

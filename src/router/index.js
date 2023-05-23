@@ -89,6 +89,11 @@ const router = createRouter({
       name: 'swaps.received',
       component: () => import('../views/Swaps/SwapsReceived.vue')
     },
+    {
+      path: '/swaps/history',
+      name: 'swaps.history',
+      component: () => import('../views/Swaps/History.vue')
+    },
     /**
      * Users
      */
