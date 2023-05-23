@@ -15,7 +15,7 @@ export default {
 </script>
 
 <style>
-/*.card {*/
-/*  height: 10rem;*/
-/*}*/
+.card {
+  height: 100%;
+}
 </style>
