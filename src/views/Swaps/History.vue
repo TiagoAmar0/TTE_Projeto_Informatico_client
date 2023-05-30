@@ -10,18 +10,33 @@
               {{ swap.target_user.name === authUserName ? 'Eu' : swap.target_user.name }}</span>
           </div>
           <div class="list-item-description" v-if="swap.direct">
-            <u><strong>{{ swap.payment_shift_user.day_name }}. {{ swap.payment_shift_user.day }} {{ swap.payment_shift_user.month }}</strong></u>
+            <u>{{ swap.payment_shift_user.day_name }}. {{ swap.payment_shift_user.day }} {{ swap.payment_shift_user.month }}</u>
             <br>
-            {{ swap.payment_shift_user.shift.description }} {{ '&#8594;' }} {{ swap.target_shift_user.shift.description }}
+            <span v-if="swap.proposing_user.name === authUserName">
+              - Fazer <u><strong>{{ swap.payment_shift_user.shift.description }}</strong></u> em vez de <u><strong>{{ swap.target_shift_user.shift.description }}</strong></u>
+            </span>
+            <span v-else>
+              - Fazer <u><strong>{{ swap.target_shift_user.shift.description }}</strong></u> em vez de <u><strong>{{ swap.payment_shift_user.shift.description }}</strong></u>
+            </span>
           </div>
           <div class="list-item-description" v-else>
-            <u><strong>{{ swap.target_shift_user.day_name }}. {{ swap.target_shift_user.day }} {{ swap.target_shift_user.month }}</strong></u>
+            <u>{{ swap.target_shift_user.day_name }}. {{ swap.target_shift_user.day }} {{ swap.target_shift_user.month }}</u>
             <br>
-            Folga {{ '&#8594;' }} {{ swap.target_shift_user.shift.description }}
+            <span v-if="swap.proposing_user.name === authUserName">
+            - <u><strong>Folga</strong></u> em vez de <u><strong>{{ swap.target_shift_user.shift.description }}</strong></u>
+            </span>
+            <span v-else>
+            - Fazer <u><strong>{{ swap.target_shift_user.shift.description }}</strong></u> em vez de <u><strong>Folga</strong></u>
+            </span>
             <br>
-            <u><strong>{{ swap.payment_shift_user.day_name }}. {{ swap.payment_shift_user.day }} {{ swap.payment_shift_user.month }}</strong></u>
+            <u>{{ swap.payment_shift_user.day_name }}. {{ swap.payment_shift_user.day }} {{ swap.payment_shift_user.month }}</u>
             <br>
-            {{ swap.payment_shift_user.shift.description }} {{ '&#8594;' }} Folga
+            <span v-if="swap.proposing_user.name === authUserName">
+            - Fazer <u><strong>{{ swap.payment_shift_user.shift.description }}</strong></u> em vez de <u><strong>Folga</strong></u>
+            </span>
+            <span v-else>
+              - <u><strong>Folga</strong></u> em vez de <u><strong>{{ swap.payment_shift_user.shift.description }}</strong></u>
+            </span>
           </div>
         </div>
       </div>

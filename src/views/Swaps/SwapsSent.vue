@@ -4,12 +4,12 @@
       <div class="list-item" v-for="swap in sentSwaps">
         <div class="list-item-content">
           <div class="list-item-title is-flex is-justify-content-space-between">
-            <span>{{ swap.target_user.name }}</span>
+            <span>Para: {{ swap.target_user.name }}</span>
           </div>
           <div class="list-item-description" v-if="swap.direct">
-            <u><strong>{{ swap.target_shift_user.day_name }}. {{ swap.target_shift_user.day }} {{ swap.target_shift_user.month }}</strong></u>
+            <u>{{ swap.target_shift_user.day_name }}. {{ swap.target_shift_user.day }} {{ swap.target_shift_user.month }}</u>
             <br>
-            {{ swap.target_shift_user.shift.description }} {{ '&#8594;' }} {{ swap.payment_shift_user.shift.description }}
+            - Fazer <u><strong>{{ swap.target_shift_user.shift.description }}</strong></u> em vez de <u><strong>{{ swap.payment_shift_user.shift.description }}</strong></u>
             <br>
             <strong :class="{
               'has-text-info': swap.status === 'Pendente',
@@ -18,13 +18,13 @@
             }">{{ swap.status }}</strong>
           </div>
           <div class="list-item-description" v-else>
-            <u><strong>{{ swap.target_shift_user.day_name }}. {{ swap.target_shift_user.day }} {{ swap.target_shift_user.month }}</strong></u>
+            <u>{{ swap.target_shift_user.day_name }}. {{ swap.target_shift_user.day }} {{ swap.target_shift_user.month }}</u>
             <br>
-            {{ swap.target_shift_user.shift.description }} {{ '&#8594;' }} Folga
+            - <u><strong>Folga</strong></u> em vez de <u><strong>{{ swap.target_shift_user.shift.description }}</strong></u>
             <br>
-            <u><strong>{{ swap.payment_shift_user.day_name }}. {{ swap.payment_shift_user.day }} {{ swap.payment_shift_user.month }}</strong></u>
+            <u>{{ swap.payment_shift_user.day_name }}. {{ swap.payment_shift_user.day }} {{ swap.payment_shift_user.month }}</u>
             <br>
-            Folga {{ '&#8594;' }} {{ swap.payment_shift_user.shift.description }}
+            - Fazer <u><strong>{{ swap.payment_shift_user.shift.description }}</strong></u> em vez de <u><strong>Folga</strong></u>
             <br>
             <strong :class="{
               'has-text-info': swap.status === 'Pendente',
