@@ -14,7 +14,7 @@
             <span v-for="swap in filteredSwaps(user_id)">
               <input type="checkbox" v-model="swap.checked" @input="handleCheckChange(swap)">
               {{ swap.rest
-                ? `Folgar hoje e pagar em ${swap.date} no turno ${swap.shift_name}`
+                ? `Folgar hoje e pagar em ${swap.date} (${swap.day_of_week}) no turno ${swap.shift_name}`
                 : `Troca direta para o turno ${swap.shift_name} de hoje` }}
               <br>
             </span>

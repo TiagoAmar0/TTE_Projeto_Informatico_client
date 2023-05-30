@@ -2,18 +2,13 @@
   <DashboardLayout title="Pedidos de Troca Recebidos">
     <div v-if="swapsReceived && swapsReceived.length"  class="list has-hoverable-list-items has-overflow-ellipsis">
       <div class="list-item" v-for="swap in swapsReceived">
-        <div class="list-item-image">
-          <figure class="image is-48x48">
-            <img class="is-rounded" src="@/assets/img/user-avatar.png" alt="">
-          </figure>
-        </div>
 
         <div class="list-item-content">
           <div class="list-item-title is-flex is-justify-content-space-between">
             <span>{{ swap.proposing_user.name }}</span>
           </div>
           <div class="list-item-description" v-if="swap.direct">
-            <u><strong>{{ swap.payment_shift_user.date }}</strong></u>
+            <u><strong>{{ swap.payment_shift_user.day_name }}. {{ swap.payment_shift_user.day }} {{ swap.payment_shift_user.month }}</strong></u>
             <br>
             {{ swap.payment_shift_user.shift.description }} {{ '&#8594;' }} {{ swap.target_shift_user.shift.description }}
             <br>
@@ -23,11 +18,11 @@
             </div>
           </div>
           <div class="list-item-description" v-else>
-            <u><strong>{{ swap.target_shift_user.date }}</strong></u>
+            <u><strong>{{ swap.target_shift_user.day_name }}. {{ swap.target_shift_user.day }} {{ swap.target_shift_user.month }}</strong></u>
             <br>
             Folga {{ '&#8594;' }} {{ swap.target_shift_user.shift.description }}
             <br>
-            <u><strong>{{ swap.payment_shift_user.date }}</strong></u>
+            <u><strong>{{ swap.payment_shift_user.day_name }}. {{ swap.payment_shift_user.day }} {{ swap.payment_shift_user.month }}</strong></u>
             <br>
             {{ swap.payment_shift_user.shift.description }} {{ '&#8594;' }} Folga
             <br>

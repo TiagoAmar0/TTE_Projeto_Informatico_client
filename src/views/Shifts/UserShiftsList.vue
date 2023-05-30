@@ -39,6 +39,8 @@ export default {
   data(){
     return {
       date: null,
+      days_of_the_week: ['Dom.', 'Seg.', 'Ter.', 'Qua.', 'Qui.', 'Sex.', 'Sáb.'],
+      months: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez']
     }
   },
   computed: {
@@ -65,16 +67,23 @@ export default {
       }
 
       return dates.map(date => {
+
+        const date_object = this.parseDate(date)
+
+        const day_name = this.days_of_the_week[date_object.getDay()]
+        const month_name = this.months[date_object.getMonth()]
+        const day = date_object.getDate()
+
         const shift = shifts.find(s => s.date === date)
         if(shift){
           return {
-            date: date,
-            shift: shift.shift.description
+            date: `${day_name} ${day} ${month_name}`,
+            shift: shift.shift.description,
           }
         }
 
         return {
-          date: date,
+          date: `${day_name} ${day} ${month_name}`,
           shift: 'Folga'
         }
       })

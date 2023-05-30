@@ -5,6 +5,7 @@
           v-model="date"
           format="dd-MM-yyyy"
           auto-apply
+          locale="pt-PT"
           :min-date="min_date"
           ref="datePickerInput"
           @update:model-value="handleDateChange"

@@ -57,7 +57,6 @@
 
 <script>
 import DashboardLayout from "@/layouts/DashboardLayout.vue";
-import ShiftsAllocatedToUserTable from "@/components/ShiftsAllocatedToUserTable.vue";
 import ItemCard from "@/components/Dashboard/ItemCard.vue";
 import router from "@/router";
 
@@ -68,7 +67,7 @@ export default {
     }
   },
   components: {
-    ShiftsAllocatedToUserTable, DashboardLayout, ItemCard},
+    DashboardLayout, ItemCard},
   layout: 'dashboard',
   computed: {
     pendingSwapsProposedToUser(){

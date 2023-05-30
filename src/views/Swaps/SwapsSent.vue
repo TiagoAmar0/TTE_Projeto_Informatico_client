@@ -7,7 +7,7 @@
             <span>{{ swap.target_user.name }}</span>
           </div>
           <div class="list-item-description" v-if="swap.direct">
-            <u><strong>{{ swap.target_shift_user.date }}</strong></u>
+            <u><strong>{{ swap.target_shift_user.day_name }}. {{ swap.target_shift_user.day }} {{ swap.target_shift_user.month }}</strong></u>
             <br>
             {{ swap.target_shift_user.shift.description }} {{ '&#8594;' }} {{ swap.payment_shift_user.shift.description }}
             <br>
@@ -18,11 +18,11 @@
             }">{{ swap.status }}</strong>
           </div>
           <div class="list-item-description" v-else>
-            <u><strong>{{ swap.target_shift_user.date }}</strong></u>
+            <u><strong>{{ swap.target_shift_user.day_name }}. {{ swap.target_shift_user.day }} {{ swap.target_shift_user.month }}</strong></u>
             <br>
             {{ swap.target_shift_user.shift.description }} {{ '&#8594;' }} Folga
             <br>
-            <u><strong>{{ swap.payment_shift_user.date }}</strong></u>
+            <u><strong>{{ swap.payment_shift_user.day_name }}. {{ swap.payment_shift_user.day }} {{ swap.payment_shift_user.month }}</strong></u>
             <br>
             Folga {{ '&#8594;' }} {{ swap.payment_shift_user.shift.description }}
             <br>
