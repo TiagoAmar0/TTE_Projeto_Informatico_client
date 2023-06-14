@@ -1,43 +1,35 @@
 <template>
-  <div id="auth-container" class="is-fullheight hero is-flex-direction-row">
-    <div class="hero-body is-justify-content-center is-align-items-center is-flex-grow-1">
-      <div class="columns is-flex is-flex-direction-column box is-mobile">
-        <div class="column" style="text-align: center">
-          <h1 class="is-size-4">
-            Plataforma TTE
-          </h1>
-        </div>
-        <div class="column">
-          <div class="control has-icons-left">
-            <input :disabled="processing" class="input is-small" type="password" placeholder="Senha" v-model="password">
-            <span class="icon is-small is-left">
-            <i class="fas fa-key"></i>
-          </span>
+  <section class="hero is-success is-fullheight" id="auth-container">
+    <div class="hero-body">
+      <div class="container has-text-centered">
+        <div class="column is-4 is-offset-4">
+          <div class="box">
+            <img src="@/assets/img/logo.png" alt="logo">
+
+              <div class="field">
+                <div class="control">
+                  <input v-model="password" :disabled="processing" class="input is-large" type="password" placeholder="Nova Password" autocomplete="new password">
+                </div>
+              </div>
+
+              <div class="field">
+                <div class="control">
+                  <input v-model="password_confirmation" :disabled="processing" class="input is-large" type="password" placeholder="Confirmar Password" autocomplete="new password">
+                </div>
+              </div>
+              <button @click="resetPassword" class="button is-block is-primary is-large is-fullwidth" :disabled="processing" :class="{ 'is-loading': processing }">
+                Definir Senha
+              </button>
+              <button :disabled="processing" class="button is-block is-link is-light is-large is-fullwidth mt-2"  @click="$router.push({ name: 'login' })">
+                Voltar
+              </button>
+
           </div>
-        </div>
-        <div class="column">
-          <div class="control has-icons-left">
-            <input :disabled="processing" class="input is-small" type="password" placeholder="Confirmar Senha" v-model="password_confirmation">
-            <span class="icon is-small is-left">
-          <i class="fas fa-key"></i>
-        </span>
-          </div>
-        </div>
-        <div class="column">
-          <button :disabled="processing" :class="{ 'is-loading': processing }" class="button is-primary is-fullwidth" @click="resetPassword">
-            Definir Senha
-          </button>
-          <button
-              :disabled="processing"
-              :class="{ 'is-loading': processing }"
-              class="button is-link is-light mt-2 is-fullwidth"
-              @click="$router.push({ name: 'login' })">
-            Voltar
-          </button>
+
         </div>
       </div>
     </div>
-  </div>
+  </section>
 </template>
 
 <script>
@@ -75,7 +67,6 @@ export default {
     if(this.$store.state.user) {
       this.$router.push({name: 'dashboard'})
 
-      console.log(this.$store.state.user)
     }
   }
 }
