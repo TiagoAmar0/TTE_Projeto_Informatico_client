@@ -4,6 +4,10 @@
       Adicionar Horário
     </button>
 
+    <button class="button is-secondary ml-3 mb-4" @click="$router.push({ name: 'service.shifts', params: { id: $route.params.id }})">
+      Gestão de Turnos
+    </button>
+
     <SchedulesTable :schedules="schedules" @reload="reload" />
 
   </DashboardLayout>

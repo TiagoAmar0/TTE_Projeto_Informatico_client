@@ -145,5 +145,6 @@ export default {
     background: url("@/assets/img/auth_bg.jpg");
     background-size: cover;
     background-repeat: no-repeat;
+    overflow: hidden;
   }
 </style>
