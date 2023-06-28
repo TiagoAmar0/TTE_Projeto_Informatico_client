@@ -8,6 +8,30 @@
         </div>
       </div>
       <div class="field">
+        <label class="label">Descrição</label>
+        <div class="control">
+          <input class="input" type="text" v-model="form.description" />
+        </div>
+      </div>
+      <div class="field">
+        <label class="label">Início</label>
+        <div class="control">
+          <input class="input" v-maska data-maska="##:##" v-model="form.start">
+        </div>
+      </div>
+      <div class="field">
+        <label class="label">Fim</label>
+        <div class="control">
+          <input class="input" v-maska data-maska="##:##" v-model="form.end">
+        </div>
+      </div>
+      <div class="field">
+        <label class="label">Horas</label>
+        <div class="control">
+          <input class="input" v-maska data-maska="##:##" v-model="form.end">
+        </div>
+      </div>
+      <div class="field">
         <div class="control">
           <button type="submit" class="button is-primary mr-2">Adicionar</button>
           <button class="button is-primary is-light mb-4" @click="$router.push({ name: 'service.shifts' })">
@@ -15,6 +39,9 @@
           </button>
         </div>
       </div>
+
+
+
     </form>
   </DashboardLayout>
 </template>
@@ -30,9 +57,9 @@ export default {
       form: {
         name: '',
         description: '',
-        start: null,
-        end: null,
-        hours: null,
+        start: '00:00',
+        end: '00:00',
+        hours: '00:00',
         nurses_qty: 0,
       }
     }

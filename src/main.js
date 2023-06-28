@@ -5,6 +5,7 @@ import { createApp } from 'vue'
  */
 import axios from 'axios';
 import { Toaster } from '@meforma/vue-toaster'
+import { vMaska } from "maska"
 
 import App from './App.vue'
 
@@ -51,6 +52,7 @@ axios.interceptors.response.use(
 app.config.globalProperties.$axios = axios
 app.config.globalProperties.$serverUrl = serverBaseUrl
 
+app.directive('maska', vMaska)
 app.use(router)
 app.use(store)
 app.use(Toaster, {
