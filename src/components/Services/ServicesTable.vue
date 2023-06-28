@@ -29,6 +29,9 @@
             <button class="button is-dark mx-1" @click="$router.push({ name: 'service.schedules', params: { id: service.id }})">
               <i class="fas fa-clock"></i>
             </button>
+            <button class="button is-secondary mx-1" @click="$router.push({ name: 'service.shifts', params: { id: service.id }})">
+              <i class="fas fa-cog"></i>
+            </button>
           </td>
         </tr>
         </tbody>

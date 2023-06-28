@@ -1,6 +1,6 @@
 <template>
   <DashboardLayout title="Adicionar Turno">
-    <form @submit.prevent="store">
+    <form @submit.prevent="update">
       <div class="field">
         <label class="label">Abreviatura</label>
         <div class="control">
@@ -48,7 +48,7 @@ import DashboardLayout from "@/layouts/DashboardLayout.vue";
 import axios from "axios";
 
 export default {
-  name: 'service-shifts-add',
+  name: 'service-shifts-edit',
   components: { DashboardLayout },
   data(){
     return {
@@ -63,9 +63,9 @@ export default {
     }
   },
   methods: {
-    store(){
+    update(){
       this.processing = true
-      axios.post(`/services/${this.$route.params.id}/shifts`, this.form)
+      axios.put(`/services/${this.$route.params.id}/shifts/${this.$route.params.shift}`, this.form)
           .then((response) => {
             this.$toast.success(response.data.message)
             this.$router.push({ name: 'service.shifts', params: { id: this.$route.params.id }})
@@ -76,7 +76,19 @@ export default {
           .finally(() => {
             this.processing = false
           })
-    }
+    },
+
+  },
+  mounted(){
+    this.processing = true;
+    axios.get(`/services/${this.$route.params.id}/shifts/${this.$route.params.shift}`)
+        .then((response) => {
+          this.form = response.data.data
+          this.processing = false
+        })
+        .catch(error => {
+          this.$toast.error(error.response.data.message)
+        })
   }
 }
 </script>
