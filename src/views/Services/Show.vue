@@ -1,16 +1,12 @@
 <template>
   <DashboardLayout :title="service.name">
     <h1 class="is-size-4 mb-2">Enfermeiros ({{ service.users.length }}):</h1>
-    <RouterLink :to="{ name: 'services' }">
-      <button class="button is-primary is-light mb-4 mr-2">
-        Voltar
-      </button>
-    </RouterLink>
-    <RouterLink :to="{ name: 'service.edit', params: { id: $route.params.id }}" >
-      <button class="button is-primary">
-        Editar Serviço
-      </button>
-    </RouterLink>
+    <button class="button is-primary is-light mb-4 mr-2" @click="$router.push({ name: 'services' })">
+      Voltar
+    </button>
+    <button class="button is-primary" @click="$router.push({ name: 'service.edit', params: { id: $route.params.id }})">
+      Editar Serviço
+    </button>
     <service-nurses-table :nurses="service.users" @disassociate="disassociate"/>
   </DashboardLayout>
 </template>

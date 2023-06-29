@@ -128,6 +128,9 @@ export default {
 
   },
   watch: {
+    search(){
+      this.page = 1
+    },
     paginatedUsers(){
       if(this.paginatedUsers.length === 0 && this.page > 0)
         this.page--

@@ -21,10 +21,10 @@
         <td>{{ shift.hours }}</td>
         <td>{{ shift.nurses_qty }}</td>
         <td>
-          <button class="button is-small is-warning mx-1" @click="$router.push({ name: 'service.shift.edit', params: { id: $route.params.id, shift: shift.id }})">
+          <button class="button is-warning mx-1" @click="$router.push({ name: 'service.shift.edit', params: { id: $route.params.id, shift: shift.id }})">
             <i class="fas fa-pencil"></i>
           </button>
-          <button class="button is-small is-danger mx-1" @click="shiftToDelete = shift; showDeleteModal = true">
+          <button class="button is-danger mx-1" @click="shiftToDelete = shift; showDeleteModal = true">
             <i class="fas fa-trash"></i>
           </button>
         </td>
