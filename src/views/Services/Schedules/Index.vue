@@ -1,11 +1,12 @@
 <template>
   <DashboardLayout title="Horários">
-    <button class="button is-primary mb-4" @click="$router.push({ name: 'service.schedules.add', params: { id: $route.params.id }})">
-      Adicionar Horário
+
+    <button class="button is-secondary mx-1 mb-4" @click="$router.push({ name: 'services' })">
+      Voltar
     </button>
 
-    <button class="button is-secondary ml-3 mb-4" @click="$router.push({ name: 'service.shifts', params: { id: $route.params.id }})">
-      Gestão de Turnos
+    <button class="button is-primary mx-1 mb-4" @click="$router.push({ name: 'service.schedules.add', params: { id: $route.params.id }})">
+      Adicionar Horário
     </button>
 
     <SchedulesTable :schedules="schedules" @reload="reload" />

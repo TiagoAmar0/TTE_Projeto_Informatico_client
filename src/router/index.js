@@ -57,6 +57,11 @@ const router = createRouter({
       component: () => import('../views/Services/Shifts/Index.vue')
     },
     {
+      path: '/services/:id/shifts/:shift',
+      name: 'service.shift.edit',
+      component: () => import('../views/Services/Shifts/Edit.vue')
+    },
+    {
       path: '/services/:id/shifts/add',
       name: 'service.shifts.add',
       component: () => import('../views/Services/Shifts/Add.vue')

@@ -1,6 +1,9 @@
 <template>
   <DashboardLayout title="Turnos do Serviço">
-    <button class="button is-primary mb-4" @click="$router.push({ name: 'service.shifts.add' })">
+    <button class="button is-secondary mx-1 mb-4" @click="$router.push({ name: 'services' })">
+      Voltar
+    </button>
+    <button class="button is-primary mx-1 mb-4" @click="$router.push({ name: 'service.shifts.add' })">
       Adicionar Turno
     </button>
     <ServiceShiftsTable :shifts="shifts" @reload="loadShifts" />
