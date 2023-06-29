@@ -5,12 +5,12 @@
 
         <div class="list-item-content">
           <div class="list-item-title is-flex is-justify-content-space-between">
-            <span>{{ swap.proposing_user.name }}</span>
+            <span>De: {{ swap.proposing_user.name }}</span>
           </div>
           <div class="list-item-description" v-if="swap.direct">
-            <u><strong>{{ swap.payment_shift_user.day_name }}. {{ swap.payment_shift_user.day }} {{ swap.payment_shift_user.month }}</strong></u>
+            <u>{{ swap.payment_shift_user.day_name }}. {{ swap.payment_shift_user.day }} {{ swap.payment_shift_user.month }}</u>
             <br>
-            {{ swap.payment_shift_user.shift.description }} {{ '&#8594;' }} {{ swap.target_shift_user.shift.description }}
+            - Fazer <u><strong>{{ swap.payment_shift_user.shift.description }}</strong></u> em vez de <u><strong>{{ swap.target_shift_user.shift.description }}</strong></u>
             <br>
             <div class="buttons are-small mt-1">
               <button :disabled="processing" class="button is-success" @click="approve(swap.id)">Aceitar</button>
@@ -18,13 +18,13 @@
             </div>
           </div>
           <div class="list-item-description" v-else>
-            <u><strong>{{ swap.target_shift_user.day_name }}. {{ swap.target_shift_user.day }} {{ swap.target_shift_user.month }}</strong></u>
+            <u>{{ swap.target_shift_user.day_name }}. {{ swap.target_shift_user.day }} {{ swap.target_shift_user.month }}</u>
             <br>
-            Folga {{ '&#8594;' }} {{ swap.target_shift_user.shift.description }}
+             - Fazer <u><strong>{{ swap.target_shift_user.shift.description }}</strong></u> em vez de <u><strong>Folga</strong></u>
             <br>
-            <u><strong>{{ swap.payment_shift_user.day_name }}. {{ swap.payment_shift_user.day }} {{ swap.payment_shift_user.month }}</strong></u>
+            <u>{{ swap.payment_shift_user.day_name }}. {{ swap.payment_shift_user.day }} {{ swap.payment_shift_user.month }}</u>
             <br>
-            {{ swap.payment_shift_user.shift.description }} {{ '&#8594;' }} Folga
+            - <u><strong>Folga</strong></u> em vez de <u><strong>{{ swap.payment_shift_user.shift.description }}</strong></u>
             <br>
             <div class="buttons are-small mt-1">
               <button :disabled="processing" class="button is-success" @click="approve(swap.id)">Aceitar</button>
