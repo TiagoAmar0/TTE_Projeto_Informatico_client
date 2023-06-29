@@ -6,6 +6,19 @@
     <button class="button is-primary mx-1 mb-4" @click="$router.push({ name: 'service.shifts.add' })">
       Adicionar Turno
     </button>
+
+    <article class="message is-warning" v-if="intervals.length">
+      <div class="message-header">
+        <p>Aviso:</p>
+      </div>
+      <div class="message-body">
+        <p>As seguintes horas do dia não estão cobertas por horário:</p>
+        <ul>
+          <li v-for="interval in intervals">{{ `- ${interval[0]} a ${interval[1]}` }}</li>
+        </ul>
+      </div>
+    </article>
+
     <ServiceShiftsTable :shifts="shifts" @reload="loadShifts" />
   </DashboardLayout>
 </template>
@@ -20,7 +33,8 @@ export default {
   components: { ServiceShiftsTable, DashboardLayout },
   data() {
     return {
-      shifts: []
+      shifts: [],
+      intervals: []
     }
   },
   methods: {
@@ -30,7 +44,8 @@ export default {
       // Get schedule
       axios.get(`/services/${service_id}/shifts`)
           .then(response => {
-            this.shifts = response.data.data
+            this.shifts = response.data.shifts
+            this.intervals = response.data.intervals
           })
           .catch(error => {
             this.$toast.error('Erro a carregar turnos')
