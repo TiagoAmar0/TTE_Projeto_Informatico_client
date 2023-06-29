@@ -165,59 +165,6 @@ export default {
 </script>
 
 <style scoped>
-  /*html,body {*/
-  /*  font-family: 'Questrial', sans-serif;*/
-  /*  font-size: 14px;*/
-  /*  font-weight: 300;*/
-  /*}*/
-  /*.hero.is-success {*/
-  /*  background: #F2F6FA;*/
-  /*}*/
-  /*.hero, .hero.is-success .nav {*/
-  /*  -webkit-box-shadow: none;*/
-  /*  box-shadow: none;*/
-  /*}*/
-  /*.box {*/
-  /*  margin-top: 5rem;*/
-  /*}*/
-
-  /*input {*/
-  /*  font-weight: 300;*/
-  /*}*/
-  /*p {*/
-  /*  font-weight: 700;*/
-  /*}*/
-
-  /*.field{*/
-  /*  padding-bottom: 10px;*/
-  /*}*/
-
-  /*#auth-container {*/
-  /*  background: url("@/assets/img/auth_bg.jpg");*/
-  /*  background-size: cover;*/
-  /*  background-repeat: no-repeat;*/
-  /*}*/
-
-  body,
-  html {
-    /*overflow: hidden;*/
-
-  }
-
-  /*.auth-bg {*/
-  /*  height: 100vh;*/
-  /*  background-image: url("@/assets/img/auth_bg.jpg");*/
-  /*  background-size: cover;*/
-  /*  background-position: center;*/
-  /*}*/
-
-  /*.auth-container {*/
-  /*  display: flex;*/
-  /*  align-items: center;*/
-  /*  justify-content: center;*/
-  /*  height: 100%;*/
-  /*}*/
-
   .main {
     background-image: url("@/assets/img/auth_bg.jpg");
     background-position: center;

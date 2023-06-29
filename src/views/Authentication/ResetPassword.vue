@@ -1,31 +1,31 @@
 <template>
-  <section class="hero is-success is-fullheight" id="auth-container">
+  <section class="main hero is-primary is-fullheight">
     <div class="hero-body">
-      <div class="container has-text-centered">
-        <div class="column is-4 is-offset-4">
-          <div class="box">
-            <img src="@/assets/img/logo.png" alt="logo">
-
-              <div class="field">
-                <div class="control">
-                  <input v-model="password" :disabled="processing" class="input is-large" type="password" placeholder="Nova Password" autocomplete="new password">
+      <div class="container">
+        <div class="columns is-centered">
+          <div class="column is-5-tablet is-4-desktop is-3-widescreen">
+            <div class="box">
+              <img src="@/assets/img/logo.png" alt="logo">
+                <div class="field">
+                  <div class="control">
+                    <input v-model="password" :disabled="processing" class="input" type="password" placeholder="Nova Password" autocomplete="new password">
+                  </div>
                 </div>
-              </div>
 
-              <div class="field">
-                <div class="control">
-                  <input v-model="password_confirmation" :disabled="processing" class="input is-large" type="password" placeholder="Confirmar Password" autocomplete="new password">
+                <div class="field">
+                  <div class="control">
+                    <input v-model="password_confirmation" :disabled="processing" class="input" type="password" placeholder="Confirmar Password" autocomplete="new password">
+                  </div>
                 </div>
-              </div>
-              <button @click="resetPassword" class="button is-block is-primary is-large is-fullwidth" :disabled="processing" :class="{ 'is-loading': processing }">
-                Definir Senha
-              </button>
-              <button :disabled="processing" class="button is-block is-link is-light is-large is-fullwidth mt-2"  @click="$router.push({ name: 'login' })">
-                Voltar
-              </button>
+                <button @click="resetPassword" class="button is-block is-primary is-large is-fullwidth" :disabled="processing" :class="{ 'is-loading': processing }">
+                  Definir Password
+                </button>
+                <button :disabled="processing" class="button is-block is-link is-light is-large is-fullwidth mt-2"  @click="$router.push({ name: 'login' })">
+                  Voltar
+                </button>
 
+            </div>
           </div>
-
         </div>
       </div>
     </div>
@@ -73,9 +73,10 @@ export default {
 </script>
 
 <style scoped>
-#auth-container {
-  background: url("@/assets/img/auth_bg.jpg");
-  background-size: cover;
+.main {
+  background-image: url("@/assets/img/auth_bg.jpg");
+  background-position: center;
   background-repeat: no-repeat;
+  background-size: cover;
 }
 </style>
