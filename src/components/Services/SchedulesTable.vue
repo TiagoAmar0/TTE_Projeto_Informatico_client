@@ -25,6 +25,9 @@
             <button class="button is-danger mx-1" @click="scheduleToDelete = schedule; showDeleteModal = true">
               <i class="fas fa-trash"></i>
             </button>
+            <button class="button is-secondary mx-1" @click="exportSchedule(schedule)">
+              <i class="fas fa-download"></i>
+            </button>
           </td>
         </tr>
         </tbody>
@@ -58,6 +61,27 @@ export default {
     }
   },
   methods: {
+    exportSchedule(schedule) {
+      const service_id = this.$route.params.id
+
+      try {
+        axios.get(`/services/${service_id}/schedules/${schedule.id}/export` , {
+          responseType: 'blob',
+        })
+            .then(response => {
+              const url = window.URL.createObjectURL(new Blob([response.data]));
+              const link = document.createElement('a');
+              link.href = url;
+              link.setAttribute('download', `Horario_${schedule.start}_a_${schedule.end}.pdf`);
+              document.body.appendChild(link);
+              link.click();
+              window.URL.revokeObjectURL(url);
+
+            })
+      } catch (error) {
+        console.error(error);
+      }
+    },
     goToPage(pageNumber) {
       this.page = pageNumber;
     },

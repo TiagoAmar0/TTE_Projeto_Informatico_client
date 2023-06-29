@@ -3,6 +3,9 @@
     <button class=" my-3 button is-info mx-1" @click="$router.push({ name: 'service.schedules.edit', params: { id: schedule.service_id, schedule: schedule.id }})">
       Editar Horário
     </button>
+    <button class=" my-3 button is-secondary mx-1" @click="exportSchedule">
+      Exportar
+    </button>
     <div v-if="date_range" class="table-container">
       <table class="table is-fullwidth is-bordered">
         <thead>
@@ -51,6 +54,28 @@ export default {
     }
   },
   methods: {
+    exportSchedule() {
+      const service_id = this.$route.params.id
+      const schedule_id = this.$route.params.schedule
+
+      try {
+        axios.get(`/services/${service_id}/schedules/${schedule_id}/export` , {
+          responseType: 'blob',
+        })
+        .then(response => {
+          const url = window.URL.createObjectURL(new Blob([response.data]));
+          const link = document.createElement('a');
+          link.href = url;
+          link.setAttribute('download', `Horario_${this.schedule.start}_a_${this.schedule.end}.pdf`);
+          document.body.appendChild(link);
+          link.click();
+          window.URL.revokeObjectURL(url);
+
+        })
+      } catch (error) {
+        console.error(error);
+      }
+    },
     getShiftsTotals(range){
       return range.map(day => {
         return {
