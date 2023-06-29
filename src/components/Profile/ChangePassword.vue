@@ -3,27 +3,27 @@
     <h3 class="is-size-5">Alterar Senha:</h3>
     <form @submit.prevent="changePassword">
       <div class="column">
-        <div class="control has-icons-left">
-          <input :disabled="processing" class="input is-small" type="password" placeholder="Senha atual" v-model="form.current_password">
-          <span class="icon is-small is-left">
-              <i class="fas fa-key"></i>
-            </span>
+        <div class="field">
+          <label class="label">Password Atual:</label>
+          <div class="control">
+            <input :disabled="processing" class="input" type="password" placeholder="Password Atual" v-model="form.current_password">
+          </div>
         </div>
       </div>
       <div class="column">
-        <div class="control has-icons-left">
-          <input :disabled="processing" class="input is-small" type="password" placeholder="Nova senha" v-model="form.new_password">
-          <span class="icon is-small is-left">
-              <i class="fas fa-key"></i>
-            </span>
+        <div class="field">
+          <label class="label">Nova password:</label>
+          <div class="control">
+            <input :disabled="processing" class="input" type="password" placeholder="Nova password" v-model="form.new_password">
+          </div>
         </div>
       </div>
       <div class="column">
-        <div class="control has-icons-left">
-          <input :disabled="processing" class="input is-small" type="password" placeholder="Confirmar nova senha" v-model="form.new_password_confirmation">
-          <span class="icon is-small is-left">
-            <i class="fas fa-key"></i>
-          </span>
+        <div class="field">
+          <label class="label">Confirmar nova password:</label>
+          <div class="control">
+          <input :disabled="processing" class="input" type="password" placeholder="Confirmar nova password" v-model="form.new_password_confirmation">
+          </div>
         </div>
       </div>
       <div class="column">
