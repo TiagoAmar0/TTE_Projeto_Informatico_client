@@ -27,13 +27,20 @@
             - <u><strong>Folga</strong></u> em vez de <u><strong>{{ swap.payment_shift_user.shift.description }}</strong></u>
             <br>
             <div class="buttons are-small mt-1">
-              <button :disabled="processing" class="button is-success" @click="approve(swap.id)">Aceitar</button>
-              <button :disabled="processing" class="button is-danger" @click="reject(swap.id)">Rejeitar</button>
+              <button :disabled="processing" class="button is-success" @click="swapToConfirm = swap.id; action='approve'">Aceitar</button>
+              <button :disabled="processing" class="button is-danger" @click="swapToConfirm = swap.id; action='reject'">Rejeitar</button>
             </div>
           </div>
         </div>
 
       </div>
+
+      <confirm-swap-model
+          v-if="swapToConfirm"
+          @confirm-accept="approve(swapToConfirm)"
+          @confirm-reject="reject(swapToConfirm)"
+          @cancel="swapToConfirm = null; action = null"
+          :action="action" />
     </div>
     <h1 v-else class="is-size-5">Não foram recebidos pedidos de troca</h1>
   </DashboardLayout>
@@ -43,10 +50,11 @@
 import axios from "axios";
 import DashboardLayout from "@/layouts/DashboardLayout.vue";
 import 'bulma-list/css/bulma-list.css'
+import ConfirmSwapModel from "@/components/Layout/Dashboard/ConfirmSwapModel.vue";
 
 export default {
   name: 'swaps-received',
-  components: { DashboardLayout },
+  components: {ConfirmSwapModel, DashboardLayout },
   computed: {
     swapsReceived(){
       return this.$store.getters.swapsProposedToUser
@@ -54,7 +62,9 @@ export default {
   },
   data(){
     return {
-      processing: false
+      processing: false,
+      swapToConfirm: null,
+      action: null
     }
   },
   methods: {
@@ -62,6 +72,8 @@ export default {
       axios.patch(`/swaps/${swap_id}/approve`)
           .then(response => {
             this.$toast.success(response.data.message)
+            this.swapToConfirm = null;
+            this.action = null
             this.refresh()
           })
           .catch(error => {
@@ -76,6 +88,8 @@ export default {
           .then(response => {
             this.$toast.success(response.data.message)
             this.refresh()
+            this.swapToConfirm = null;
+            this.action = null
           })
           .catch(error => {
             this.$toast.error(error.response.data.message)
