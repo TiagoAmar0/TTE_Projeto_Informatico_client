@@ -3,7 +3,7 @@
     <div class="hero-body">
       <div class="container">
         <div class="columns is-centered">
-          <div class="column is-5-tablet is-4-desktop is-3-widescreen">
+          <div class="column is-6-tablet is-5-desktop is-4-widescreen">
             <form class="box" @submit.prevent="login" v-if="!forgotPasswordForm">
               <img src="@/assets/img/logo.png" alt="logo">
               <div class="field">
@@ -21,7 +21,7 @@
                 Login
               </button>
               <button class="button is-block is-link is-light is-large is-fullwidth mt-2" @click="openForgotForm">
-                Esqueci-me da senha
+                Esqueci-me da password
               </button>
             </form>
 
@@ -35,7 +35,7 @@
                   </div>
 
                   <button type="submit" class="button is-block is-primary is-large is-fullwidth" :disabled="processing" :class="{ 'is-loading': processing }">
-                    Recuperar Senha
+                    Recuperar Password
                   </button>
                   <button class="button is-block is-link is-light is-large is-fullwidth mt-2" @click="backForgotForm">
                     Voltar

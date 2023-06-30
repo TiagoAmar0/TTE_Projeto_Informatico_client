@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h3 class="is-size-5">Alterar Senha:</h3>
+    <h3 class="is-size-5">Alterar Password:</h3>
     <form @submit.prevent="changePassword">
       <div class="column">
         <div class="field">
@@ -28,7 +28,7 @@
       </div>
       <div class="column">
         <button :disabled="processing" :class="{ 'is-loading': processing }" class="button is-primary" type="submit">
-          Alterar Senha
+          Alterar Password
         </button>
       </div>
     </form>
@@ -54,7 +54,7 @@ export default {
     changePassword(){
       axios.put('password', this.form)
           .then(() => {
-            this.$toast.success('A senha foi atualizada')
+            this.$toast.success('A password foi atualizada')
           })
           .catch(error => {
             this.$toast.error(error.response.data.message)

@@ -23,16 +23,12 @@
           <td>{{ user.service ? user.service : 'Nenhum' }}</td>
           <td>{{ user.type_normalized }}</td>
           <td>
-            <router-link :to="{ name: 'user.show', params: { id: user.id }}">
-              <button class="button is-primary mx-1">
-                <i class="fas fa-eye"></i>
-              </button>
-            </router-link>
-            <router-link :to="{ name: 'user.edit', params: { id: user.id }}">
-              <button class="button is-warning mx-1">
-                <i class="fas fa-pencil"></i>
-              </button>
-            </router-link>
+            <button class="button is-primary mx-1" @click="$router.push({ name: 'user.show', params: { id: user.id }})">
+              <i class="fas fa-eye"></i>
+            </button>
+            <button class="button is-warning mx-1" @click="$router.push({ name: 'user.edit', params: { id: user.id }})">
+              <i class="fas fa-pencil"></i>
+            </button>
             <button class="button is-danger mx-1" @click="userToDelete = user; showDeleteModal = true">
               <i class="fas fa-trash"></i>
             </button>
@@ -70,34 +66,34 @@ export default {
     filteredServices(){
       // Filter by search string ignoring accents and case
       return this.$store.getters.users.filter(s => s.name
-          .normalize("NFD")
-          .replace(/[\u0300-\u036f]/g, "")
+          .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, '')
           .toLowerCase()
           .includes(
               this.search
-                  .normalize("NFD")
-                  .replace(/[\u0300-\u036f]/g, "")
+                  .normalize('NFD')
+                  .replace(/[\u0300-\u036f]/g, '')
                   .toLowerCase())
           ||
           s.email
-              .normalize("NFD")
-              .replace(/[\u0300-\u036f]/g, "")
+              .normalize('NFD')
+              .replace(/[\u0300-\u036f]/g, '')
               .toLowerCase()
               .includes(
                   this.search
-                      .normalize("NFD")
-                      .replace(/[\u0300-\u036f]/g, "")
+                      .normalize('NFD')
+                      .replace(/[\u0300-\u036f]/g, '')
                       .toLowerCase())
 
           ||
           s.type_normalized
-              .normalize("NFD")
-              .replace(/[\u0300-\u036f]/g, "")
+              .normalize('NFD')
+              .replace(/[\u0300-\u036f]/g, '')
               .toLowerCase()
               .includes(
                   this.search
-                      .normalize("NFD")
-                      .replace(/[\u0300-\u036f]/g, "")
+                      .normalize('NFD')
+                      .replace(/[\u0300-\u036f]/g, '')
                       .toLowerCase())
       )
     },

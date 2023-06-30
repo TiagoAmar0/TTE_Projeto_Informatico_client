@@ -34,8 +34,9 @@ export default {
     }
   },
   methods: {
-    disassociate(userId){
-      this.$store.dispatch('disassociateUserToService', { service: this.$route.params.id, user: userId})
+
+    disassociate(userID){
+      this.$store.dispatch('disassociateUserToService', { service: this.$route.params.id, user: userID})
           .then((response) => {
             this.$toast.success(response.message)
             this.service = response.data.service

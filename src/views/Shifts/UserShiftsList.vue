@@ -49,49 +49,49 @@ export default {
         return [];
 
 
-      const start_date = this.date[0]
-      const end_date = this.date[1]
+      const startDate = this.date[0]
+      const endDate = this.date[1]
 
       const shifts = this.$store.state.user.shifts.filter(s => {
-        return this.parseDate(s.date) >= start_date && this.parseDate(s.date) <= end_date
+        return this.parseDate(s.date) >= startDate && this.parseDate(s.date) <= endDate
       });
 
       if(!shifts)
         return
 
       let dates = [];
-      const iterator_date = new Date(start_date.getTime())
-      while(iterator_date <= end_date){
-        dates.push(this.formatDate(iterator_date))
-        iterator_date.setDate(iterator_date.getDate() + 1);
+      const controlDate = new Date(startDate.getTime())
+      while(controlDate <= endDate){
+        dates.push(this.formatDate(controlDate))
+        controlDate.setDate(controlDate.getDate() + 1);
       }
 
       return dates.map(date => {
 
-        const date_object = this.parseDate(date)
+        const parsedDate = this.parseDate(date)
 
-        const day_name = this.days_of_the_week[date_object.getDay()]
-        const month_name = this.months[date_object.getMonth()]
-        const day = date_object.getDate()
+        const dayName = this.days_of_the_week[parsedDate.getDay()]
+        const monthName = this.months[parsedDate.getMonth()]
+        const day = parsedDate.getDate()
 
         const shift = shifts.find(s => s.date === date)
         if(shift){
           return {
-            date: `${day_name} ${day} ${month_name}`,
+            date: `${dayName} ${day} ${monthName}`,
             shift: shift.shift.description,
           }
         }
 
         return {
-          date: `${day_name} ${day} ${month_name}`,
+          date: `${dayName} ${day} ${monthName}`,
           shift: 'Folga'
         }
       })
     }
   },
   methods: {
-    parseDate(date_string){
-      const [day, month, year] = date_string.split('/');
+    parseDate(dateString){
+      const [day, month, year] = dateString.split('/');
       return new Date(`${year}-${month}-${day}`);
     },
     formatDate(date){
@@ -102,20 +102,15 @@ export default {
     }
   },
   mounted() {
-    // Obtém a data atual
     const today = new Date();
 
-
-    // Calcula a diferença entre o dia atual e o dia da semana de segunda-feira
     const diff = today.getDay() - 1;
 
-    // Obtém o primeiro dia da semana atual (segunda-feira)
-    const first_day_of_week = new Date(today.getFullYear(), today.getMonth(), today.getDate() - diff);
+    const firstDayOfWeek = new Date(today.getFullYear(), today.getMonth(), today.getDate() - diff);
 
-    // Obtém o último dia da semana atual (domingo)
-    const last_day_of_week = new Date(today.getFullYear(), today.getMonth(), first_day_of_week.getDate() + 6);
+    const lastDayOfWeek = new Date(today.getFullYear(), today.getMonth(), firstDayOfWeek.getDate() + 6);
 
-    this.date = [first_day_of_week, last_day_of_week];
+    this.date = [firstDayOfWeek, lastDayOfWeek];
   }
 }
 </script>

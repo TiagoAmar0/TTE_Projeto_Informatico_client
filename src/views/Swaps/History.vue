@@ -1,7 +1,7 @@
 <template>
   <DashboardLayout title="Histórico de Trocas">
-    <div v-if="sorted_accepted_swaps && sorted_accepted_swaps.length"  class="list has-hoverable-list-items has-overflow-ellipsis">
-      <div class="list-item" v-for="swap in sorted_accepted_swaps">
+    <div v-if="sortedAcceptedSwaps && sortedAcceptedSwaps.length"  class="list has-hoverable-list-items has-overflow-ellipsis">
+      <div class="list-item" v-for="swap in sortedAcceptedSwaps">
         <div class="list-item-content">
           <div class="list-item-title is-flex is-justify-content-space-between">
             <span>
@@ -56,12 +56,12 @@ export default {
   components: { DashboardLayout },
   data(){
     return {
-      accepted_swaps: [],
+      acceptedSwaps: [],
     }
   },
   methods: {
-    parseDate(date_string){
-      const [day, month, year] = date_string.split('/');
+    parseDate(dateString){
+      const [day, month, year] = dateString.split('/');
       return new Date(`${year}-${month}-${day}`);
     },
   },
@@ -69,11 +69,11 @@ export default {
     authUserName(){
       return this.$store.getters.authUser.name
     },
-    sorted_accepted_swaps(){
-      if(!this.accepted_swaps || !this.accepted_swaps.length)
+    sortedAcceptedSwaps(){
+      if(!this.acceptedSwaps || !this.acceptedSwaps.length)
         return []
 
-      return this.accepted_swaps.sort((a,b) => {
+      return this.acceptedSwaps.sort((a,b) => {
         return this.parseDate(b.target_shift_user.date) - this.parseDate(a.target_shift_user.date);
       })
     }
@@ -81,7 +81,7 @@ export default {
   mounted(){
     axios.get('swaps/history')
         .then(response => {
-          this.accepted_swaps = response.data.data
+          this.acceptedSwaps = response.data.data
         })
         .catch(error => {
           console.log(error)

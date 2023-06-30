@@ -9,12 +9,10 @@
       </div>
       <div class="field">
         <div class="control">
-          <button class="button is-primary mr-2">Adicionar</button>
-          <RouterLink :to="{ name: 'services' }">
-            <button class="button is-primary is-light mb-4">
-              Cancelar
-            </button>
-          </RouterLink>
+          <button :disabled="processing" :class="{ 'is-loading': processing }" type="submit" class="button is-primary mr-2">Adicionar</button>
+          <button :disabled="processing" class="button is-primary is-light mb-4" @click="$router.push({ name: 'services' })">
+            Cancelar
+          </button>
         </div>
       </div>
     </form>
@@ -29,6 +27,7 @@ export default {
   components: { DashboardLayout },
   data(){
     return {
+      processing: false,
       form: {
         name: ''
       }
@@ -36,15 +35,18 @@ export default {
   },
   methods: {
     store(){
+      this.processing = true
       this.$store.dispatch('storeService',this.form)
           .then(response => {
-            console.log(response)
             this.$toast.success('O serviço foi adicionado')
             this.$router.push({ name: 'service.edit', params: { id: response.id }})
           })
           .catch(error => {
             if(error.hasOwnProperty('response'))
               this.$toast.error(error.response.data.message)
+          })
+          .finally(() => {
+            this.processing = false
           })
     }
   }

@@ -28,35 +28,34 @@ export default {
 </script>
 
 <style scoped>
-/* modal styles */
 .modal {
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
 }
 
 .modal-background {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
   background-color: rgba(0, 0, 0, 0.5);
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  position: fixed;
 }
 
 .modal-content {
-  background-color: #fff;
   max-width: 400px;
   width: 100%;
+  background-color: #fff;
 }
 
 .box {
-  padding: 1.5rem;
+  padding: 1.4rem;
 }
 
 .buttons {
+  margin-top: 1rem;
   display: flex;
   justify-content: flex-end;
-  margin-top: 1rem;
 }
 </style>

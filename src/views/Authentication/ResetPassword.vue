@@ -3,7 +3,7 @@
     <div class="hero-body">
       <div class="container">
         <div class="columns is-centered">
-          <div class="column is-5-tablet is-4-desktop is-3-widescreen">
+          <div class="column is-6-tablet is-5-desktop is-4-widescreen">
             <div class="box">
               <img src="@/assets/img/logo.png" alt="logo">
                 <div class="field">
@@ -14,7 +14,7 @@
 
                 <div class="field">
                   <div class="control">
-                    <input v-model="password_confirmation" :disabled="processing" class="input" type="password" placeholder="Confirmar Password" autocomplete="new password">
+                    <input v-model="passwordConfirmation" :disabled="processing" class="input" type="password" placeholder="Confirmar Password" autocomplete="new password">
                   </div>
                 </div>
                 <button @click="resetPassword" class="button is-block is-primary is-large is-fullwidth" :disabled="processing" :class="{ 'is-loading': processing }">
@@ -23,7 +23,6 @@
                 <button :disabled="processing" class="button is-block is-link is-light is-large is-fullwidth mt-2"  @click="$router.push({ name: 'login' })">
                   Voltar
                 </button>
-
             </div>
           </div>
         </div>
@@ -39,16 +38,16 @@ export default {
   data () {
     return {
       password: null,
-      password_confirmation: null,
+      passwordConfirmation: null,
       processing: false,
     }
   },
   methods: {
     resetPassword(){
       this.processing = true
-      axios.put('reset-password', { token: this.$route.query.token, password: this.password, password_confirmation: this.password_confirmation })
+      axios.put('reset-password', { token: this.$route.query.token, password: this.password, password_confirmation: this.passwordConfirmation })
           .then(() => {
-            this.$toast.success('A senha foi atualizada')
+            this.$toast.success('A password foi atualizada')
             this.$router.push({ name: 'login' })
           })
           .catch(error => {

@@ -18,20 +18,20 @@
         </tr>
         </thead>
         <tbody>
-        <tr v-for="ln in leadNurses" :key="ln.id">
-          <td>{{ ln.name }}</td>
+        <tr v-for="leadNurse in leadNurses" :key="leadNurse.id">
+          <td>{{ leadNurse.name }}</td>
           <td>Enfermeiro Chefe</td>
           <td>
-            <button class="button is-danger" @click="$emit('disassociate', ln.id)">
+            <button :disabled="processing" class="button is-danger" @click="$emit('disassociate', leadNurse.id)">
               <i class="fas fa-minus"></i>
             </button>
           </td>
         </tr>
-        <tr v-for="rn in regularNurses" :key="rn.id">
-          <td>{{ rn.name }}</td>
+        <tr v-for="nurse in nurses" :key="nurse.id">
+          <td>{{ nurse.name }}</td>
           <td>Enfermeiro</td>
           <td>
-            <button class="button is-danger" @click="$emit('disassociate', rn.id)">
+            <button :disabled="processing" class="button is-danger" @click="$emit('disassociate', nurse.id)">
               <i class="fas fa-minus"></i>
             </button>
           </td>
@@ -45,12 +45,12 @@
 <script>
 export default {
   name: 'service-nurses-table',
-  props: ['nurses'],
+  props: ['nurses', 'processing'],
   computed: {
     leadNurses(){
       return this.nurses.filter(n => n.type === 'lead-nurse')
     },
-    regularNurses(){
+    nurses(){
       return this.nurses.filter(n => n.type === 'nurse')
     }
   }

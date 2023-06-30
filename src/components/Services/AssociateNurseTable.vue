@@ -15,20 +15,20 @@
         </tr>
         </thead>
         <tbody>
-        <tr v-for="ln in filteredLeadNurses" :key="ln.id">
-          <td>{{ ln.name }}</td>
+        <tr v-for="leadNurse in filteredLeadNurses" :key="leadNurse.id">
+          <td>{{ leadNurse.name }}</td>
           <td>Enfermeiro Chefe</td>
           <td>
-            <button class="button is-success" @click="$emit('associate', ln.id)">
+            <button :disabled="processing" class="button is-success" @click="$emit('associate', leadNurse.id)">
               <i class="fas fa-plus"></i>
             </button>
           </td>
         </tr>
-        <tr v-for="rn in filteredRegularNurses" :key="rn.id">
-          <td>{{ rn.name }}</td>
+        <tr v-for="nurse in filteredNurses" :key="nurse.id">
+          <td>{{ nurse.name }}</td>
           <td>Enfermeiro</td>
           <td>
-            <button class="button is-success" @click="$emit('associate', rn.id)">
+            <button :disabled="processing" class="button is-success" @click="$emit('associate', nurse.id)">
               <i class="fas fa-plus"></i>
             </button>
           </td>
@@ -36,14 +36,13 @@
         </tbody>
       </table>
     </div>
-
   </div>
 </template>
 
 <script>
 export default {
   name: 'associate-nurse-table',
-  props: ['nurses'],
+  props: ['nurses', 'processing'],
   data(){
     return {
       search: ''
@@ -51,31 +50,31 @@ export default {
   },
   computed: {
     leadNurses(){
-      return this.nurses.filter(n => n.type === 'lead-nurse')
+      return this.nurses.filter(nurse => nurse.type === 'lead-nurse')
     },
-    regularNurses(){
-      return this.nurses.filter(n => n.type === 'nurse')
+    nurses(){
+      return this.nurses.filter(nurse => nurse.type === 'nurse')
     },
     filteredLeadNurses(){
-      return this.leadNurses.filter(s => s.name
-          .normalize("NFD")
-          .replace(/[\u0300-\u036f]/g, "")
+      return this.leadNurses.filter(nurse => nurse.name
+          .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, '')
           .toLowerCase()
           .includes(
               this.search
-                  .normalize("NFD")
-                  .replace(/[\u0300-\u036f]/g, "")
+                  .normalize('NFD')
+                  .replace(/[\u0300-\u036f]/g, '')
                   .toLowerCase()))
     },
-    filteredRegularNurses(){
-      return this.regularNurses.filter(s => s.name
-          .normalize("NFD")
-          .replace(/[\u0300-\u036f]/g, "")
+    filteredNurses(){
+      return this.nurses.filter(nurse => nurse.name
+          .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, '')
           .toLowerCase()
           .includes(
               this.search
                   .normalize("NFD")
-                  .replace(/[\u0300-\u036f]/g, "")
+                  .replace(/[\u0300-\u036f]/g, '')
                   .toLowerCase()))
     },
   }
