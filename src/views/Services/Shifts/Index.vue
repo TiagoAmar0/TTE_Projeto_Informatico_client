@@ -39,10 +39,10 @@ export default {
   },
   methods: {
     loadShifts(){
-      const service_id = this.$route.params.id
+      const serviceID = this.$route.params.id
 
       // Get schedule
-      axios.get(`/services/${service_id}/shifts`)
+      axios.get(`/services/${serviceID}/shifts`)
           .then(response => {
             this.shifts = response.data.shifts
             this.intervals = response.data.intervals

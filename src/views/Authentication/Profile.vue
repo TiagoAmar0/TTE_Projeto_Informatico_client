@@ -14,11 +14,6 @@ import ProfileChangePassword from "@/components/Profile/ChangePassword.vue";
 export default {
   name: 'profile',
   components: {ProfileChangePassword, ProfileGeneralInfo, DashboardLayout },
-  data(){
-    return {
-
-    }
-  },
   computed: {
     user(){
       return this.$store.getters.authUser

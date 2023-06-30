@@ -1,8 +1,11 @@
 <template>
   <DashboardLayout title="Adicionar turnos">
+    <button class="button is-primary is-light mx-1 mb-4" @click="$router.push({ name: 'service.schedules', params: { id: $route.params.id }})">
+      Voltar
+    </button>
     <div class="my-2">
       <VueDatePicker
-          v-model="date_range"
+          v-model="dateRange"
           range
           format="dd-MM-yyyy"
           auto-apply
@@ -11,36 +14,36 @@
       />
     </div>
 
-    <div v-if="date_range" class="table-container">
+    <div v-if="dateRange" class="table-container">
       <table class="table is-fullwidth">
         <thead>
           <tr>
             <td></td>
-            <td class="is-narrow" v-for="(date, i) in dates_in_range" :class="{'is-warning': date.day_of_week === 0 || date.day_of_week === 6}">
+            <td class="is-narrow" v-for="(date, i) in datesInRange" :class="{'is-warning': date.day_of_week === 0 || date.day_of_week === 6}">
               <div v-for="shift in date.possible_shifts">
                 {{ shift.name }}: {{ shift.filled }}
                 <br>
               </div>
               <u><strong>
-              <span v-if="i === 0 || dates_in_range[i-1].month !== dates_in_range[i].month">
+              <span v-if="i === 0 || datesInRange[i-1].month !== datesInRange[i].month">
                 {{ date.month.charAt(0).toUpperCase() + date.month.slice(1).replace('.', '')}}
               </span><br>
                 {{ date.day }}
                 <br>
-                {{ days_of_the_week[date.day_of_week]}}</strong></u>
+                {{ daysOfWeek[date.day_of_week]}}</strong></u>
             </td>
           </tr>
         </thead>
         <tbody>
           <tr v-for="(user, user_index) in service.users">
             <td class="is-narrow">{{ user.name }} ({{ user.total_hours }} horas)</td>
-            <td v-for="date_index in dates_in_range.length" :class="{'is-warning': dates_in_range[date_index - 1].day_of_week === 0 ||  dates_in_range[date_index - 1].day_of_week === 6}">
+            <td v-for="date_index in datesInRange.length" :class="{'is-warning': datesInRange[date_index - 1].day_of_week === 0 ||  datesInRange[date_index - 1].day_of_week === 6}">
               <div class="select">
                 <select
-                    v-model="dates_in_range[date_index - 1].nurses[user_index].shift"
-                    @change="updateUserTotalHoursAndNursesInDay(dates_in_range[date_index - 1].nurses[user_index].id, date_index - 1)">
+                    v-model="datesInRange[date_index - 1].nurses[user_index].shift"
+                    @change="updateUserTotalHoursAndNursesInDay(datesInRange[date_index - 1].nurses[user_index].id, date_index - 1)">
                   <option :value="null">-</option>
-                  <option v-for="shift in dates_in_range[date_index - 1].possible_shifts.filter(s => s.show === true)" :value="shift.id">
+                  <option v-for="shift in datesInRange[date_index - 1].possible_shifts.filter(s => s.show === true)" :value="shift.id">
                     {{ shift.name }}
                   </option>
                 </select>
@@ -71,12 +74,10 @@ export default {
   components: { DashboardLayout, VueDatePicker },
   data(){
     return {
-      date_range: null,
-      days_of_the_week: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'],
-      dates_in_range_past: [],
-      shifts_to_users: [],
-      already_submited: false,
-      total_shift_nurses: 0,
+      dateRange: null,
+      daysOfWeek: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'],
+      datesInRangeTemp: [],
+      alreadySubmitted: false,
       interval: null,
       service: {
         users: [],
@@ -96,10 +97,10 @@ export default {
 
       this.resetPossibleShiftsForDay(dateIndex);
 
-      this.dates_in_range[dateIndex].nurses_total = this.updatePossibleShiftsForDay(dateIndex);
+      this.datesInRange[dateIndex].nurses_total = this.updatePossibleShiftsForDay(dateIndex);
     },
     resetPossibleShiftsForDay(dateIndex){
-      this.dates_in_range[dateIndex].possible_shifts = this.dates_in_range[dateIndex].possible_shifts.map(shift => ({
+      this.datesInRange[dateIndex].possible_shifts = this.datesInRange[dateIndex].possible_shifts.map(shift => ({
         ...shift,
         filled: 0
       }));
@@ -107,7 +108,7 @@ export default {
     getTotalNurseHoursForUser(user){
       let totalHours = 0;
 
-      this.dates_in_range.forEach(date => {
+      this.datesInRange.forEach(date => {
         const nurse = date.nurses.find(nurse => nurse.id === user.id && nurse.shift);
         if (nurse) {
           const shift = date.possible_shifts.find(shift => shift.id === nurse.shift);
@@ -120,10 +121,10 @@ export default {
     updatePossibleShiftsForDay(dateIndex){
       let nursesTotal = 0;
 
-      this.dates_in_range[dateIndex].nurses.forEach(nurse => {
+      this.datesInRange[dateIndex].nurses.forEach(nurse => {
         if (nurse.shift) {
           nursesTotal++;
-          const shift = this.dates_in_range[dateIndex].possible_shifts.find(shift => shift.id === nurse.shift);
+          const shift = this.datesInRange[dateIndex].possible_shifts.find(shift => shift.id === nurse.shift);
           shift.filled++;
         }
       });
@@ -131,11 +132,10 @@ export default {
       return nursesTotal;
     },
     submitSchedule(draft, auto){
-        // Insert new schedule
         axios.post(`/services/${this.$route.params.id}/schedules`, {
-          data: this.dates_in_range,
+          data: this.datesInRange,
           draft: draft ,
-          date_range: this.date_range
+          date_range: this.dateRange
         })
           .then(response => {
             this.$toast.success(response.data.message)
@@ -154,7 +154,7 @@ export default {
     }
   },
   computed:{
-    total_nurses_required(){
+    totalNursesRequired(){
       if(this.service.shifts)
         return this.service.shifts.reduce((acc, s) => {
           return acc + s.nurses_qty
@@ -162,13 +162,13 @@ export default {
 
       return 0
     },
-    dates_in_range() {
-      if (!this.date_range) {
-        this.dates_in_range_past = [];
+    datesInRange() {
+      if (!this.dateRange) {
+        this.datesInRangeTemp = [];
         return [];
       }
 
-      const [start, end] = this.date_range;
+      const [start, end] = this.dateRange;
       const options = { timeZone: 'Europe/Lisbon' };
       const startDate = new Date(start.toLocaleString('en-US', options));
       startDate.setUTCHours(0, 0, 0, 0);
@@ -180,9 +180,9 @@ export default {
         const date = new Date(timestamp);
         const dateFormatted = date.toLocaleDateString('pt-PT', { day: '2-digit', month: '2-digit', year: 'numeric' });
 
-        const existingDateIndex = this.dates_in_range_past.findIndex(d => d.date === dateFormatted);
+        const existingDateIndex = this.datesInRangeTemp.findIndex(d => d.date === dateFormatted);
         if (existingDateIndex !== -1) {
-          range.push(this.dates_in_range_past[existingDateIndex]);
+          range.push(this.datesInRangeTemp[existingDateIndex]);
           continue;
         }
 
@@ -198,7 +198,7 @@ export default {
         });
       }
 
-      this.dates_in_range_past = range;
+      this.datesInRangeTemp = range;
 
       return range;
     }
@@ -219,15 +219,13 @@ export default {
         .catch(error => console.log(error))
 
       this.interval = setInterval(() => {
-        if(this.date_range && !this.already_submited){
+        if(this.dateRange && !this.alreadySubmitted){
           this.submitSchedule(true, true)
         }
       }, 30000)
   },
   beforeUnmount(){
     clearInterval(this.interval)
-  },
-  watch:{
   }
 }
 </script>

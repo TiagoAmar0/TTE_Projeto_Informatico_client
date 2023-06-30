@@ -64,15 +64,14 @@ export default {
   },
   computed: {
     filteredServices(){
-      // Filter by search string ignoring accents and case
       return this.$store.getters.services.filter(s => s.name
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "")
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
             .toLowerCase()
             .includes(
                 this.search
-                    .normalize("NFD")
-                    .replace(/[\u0300-\u036f]/g, "")
+                    .normalize('NFD')
+                    .replace(/[\u0300-\u036f]/g, '')
                     .toLowerCase())
       )
     },
@@ -103,6 +102,9 @@ export default {
 
   },
   watch: {
+    search(){
+      this.page = 1
+    },
     paginatedServices(){
       if(this.paginatedServices.length === 0 && this.page > 0)
         this.page--

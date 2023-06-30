@@ -10,10 +10,10 @@
 <script>
 export default {
   name: 'item-card',
-  props: ['title', 'is_dashboard'],
+  props: ['title', 'isDashboard'],
   computed: {
     cardClass(){
-      if(this.is_dashboard)
+      if(this.isDashboard)
         return 'card-content has-text-centered is-flex is-flex-direction-column is-justify-content-center is-align-items-center'
 
       return 'card-content has-text-centered'

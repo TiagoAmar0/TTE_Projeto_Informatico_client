@@ -62,10 +62,10 @@ export default {
   },
   methods: {
     exportSchedule(schedule) {
-      const service_id = this.$route.params.id
+      const serviceID = this.$route.params.id
 
       try {
-        axios.get(`/services/${service_id}/schedules/${schedule.id}/export` , {
+        axios.get(`/services/${serviceID}/schedules/${schedule.id}/export` , {
           responseType: 'blob',
         })
             .then(response => {
@@ -92,7 +92,6 @@ export default {
             this.$emit('reload')
           })
           .catch(error => {
-            console.log(error)
             this.$toast.error(error.response.data.message)
           })
           .finally(() => {

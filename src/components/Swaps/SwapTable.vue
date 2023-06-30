@@ -8,10 +8,10 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(user, user_id) in users" :key="user_id">
+        <tr v-for="(user, userID) in users" :key="userID">
           <td>{{ user }}</td>
           <td>
-            <span v-for="swap in filteredSwaps(user_id)">
+            <span v-for="swap in filteredSwaps(userID)">
               <input type="checkbox" v-model="swap.checked" @input="handleCheckChange(swap)">
               {{ swap.rest
                 ? `Folgar hoje e pagar em ${swap.date} (${swap.day_of_week}) no turno ${swap.shift_name}`
@@ -31,7 +31,7 @@ export default {
   props: ['swaps', 'users'],
   data(){
     return {
-      available_swaps: []
+      availableSwaps: []
     }
   },
   methods: {
@@ -42,10 +42,10 @@ export default {
         this.$emit('uncheckSwap', swap)
       }
     },
-    filteredSwaps(user_id){
-      return this.swaps.filter(swap => swap.user_id === parseInt(user_id)).map(s => {
+    filteredSwaps(userID){
+      return this.swaps.filter(swap => swap.user_id === parseInt(userID)).map(swap => {
         return {
-          ...s,
+          ...swap,
           checked: false
         }
       })

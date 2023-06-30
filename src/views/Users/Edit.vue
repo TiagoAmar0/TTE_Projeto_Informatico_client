@@ -25,12 +25,10 @@
       </div>
       <div class="field">
         <div class="control">
-          <button type="submit" class="button is-primary mr-2">Atualizar</button>
-          <RouterLink :to="{ name: 'users' }">
-            <button class="button is-primary is-light mb-4">
-              Cancelar
-            </button>
-          </RouterLink>
+          <button :disabled="processing" :class="{ 'is-loading': processing }" type="submit" class="button is-primary mr-2">Atualizar</button>
+          <button :disabled="processing" class="button is-primary is-light mb-4" @click="$router.push({ name: 'users' })">
+            Cancelar
+          </button>
         </div>
       </div>
     </form>
@@ -55,6 +53,7 @@ export default {
         type: null,
         type_normalized: null,
       },
+      processing: false,
       userTypes: [
         { value: 'admin', text: 'Administrador' },
         { value: 'lead-nurse', text: 'Enfermeiro Chefe' },
@@ -63,6 +62,7 @@ export default {
     }
   },
   mounted(){
+    this.processing = true
     const id = this.$route.params.id
 
     axios.get(`/users/${id}`)
@@ -70,9 +70,13 @@ export default {
           this.user = response.data.data
         })
         .catch(error => console.log(error))
+        .finally(() => {
+          this.processing = false
+        })
   },
   methods: {
     update(){
+      this.processing = true
       this.$store.dispatch('updateUser', this.user)
           .then(() => {
             this.$toast.success('O utilizador foi atualizado')
@@ -82,7 +86,11 @@ export default {
             if(error.hasOwnProperty('response'))
               this.$toast.error(error.response.data.message)
           })
+          .finally(() => {
+            this.processing = false
+          })
     }
+
   }
 }
 </script>

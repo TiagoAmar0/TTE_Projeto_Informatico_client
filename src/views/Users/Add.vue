@@ -25,12 +25,10 @@
       </div>
       <div class="field">
         <div class="control">
-          <button class="button is-primary mr-2">Adicionar</button>
-          <RouterLink :to="{ name: 'users' }">
-            <button class="button is-primary is-light mb-4">
-              Cancelar
-            </button>
-          </RouterLink>
+          <button :disabled="processing" :class="{ 'is-loading': processing }" class="button is-primary mr-2">Adicionar</button>
+          <button :disabled="processing" class="button is-primary is-light mb-4" @click="$router.push({ name: 'users' })">
+            Cancelar
+          </button>
         </div>
       </div>
     </form>
@@ -50,6 +48,7 @@ export default {
         email: null,
         type: null
       },
+      processing: false,
       userTypes: [
         { value: 'admin', text: 'Administrador' },
         { value: 'lead-nurse', text: 'Enfermeiro Chefe' },
@@ -59,6 +58,7 @@ export default {
   },
   methods: {
     store(){
+      this.processing = true
       this.$store.dispatch('storeUser',this.form)
           .then(() => {
             this.$toast.success('O utilizador foi adicionado')
@@ -67,6 +67,9 @@ export default {
           .catch(error => {
             if(error.hasOwnProperty('response'))
               this.$toast.error(error.response.data.message)
+          })
+          .finally(() => {
+            this.processing = false
           })
     }
   }

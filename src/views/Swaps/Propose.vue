@@ -6,7 +6,7 @@
           format="dd-MM-yyyy"
           auto-apply
           locale="pt-PT"
-          :min-date="min_date"
+          :min-date="minDate"
           ref="datePickerInput"
           @update:model-value="handleDateChange"
           :close-on-auto-apply="true"
@@ -14,17 +14,17 @@
       />
     </div>
     <div v-if="date && !error">
-      <span v-if="user_shift"><u>Turno a realizar na data: <strong>{{ user_shift.shift.description }}</strong></u></span>
+      <span v-if="userShift"><u>Turno a realizar na data: <strong>{{ userShift.shift.description }}</strong></u></span>
       <span v-else><u>Turno a realizar na data: <strong>Folga</strong></u></span>
       <hr>
-      <div v-if="available_swaps && available_swaps.length && user_shift">
+      <div v-if="availableSwaps && availableSwaps.length && userShift">
         <h1 class="is-size-4">Possíveis Trocas</h1>
       </div>
       <div v-else>
         <h1 class="is-size-4">Não há trocas possíveis para esta data</h1>
       </div>
-      <div v-if="available_swaps && available_swaps.length">
-        <swap-table  :users="users" :swaps="available_swaps" @checkSwap="checkSwap" @uncheckSwap="uncheckSwap"/>
+      <div v-if="availableSwaps && availableSwaps.length">
+        <swap-table  :users="users" :swaps="availableSwaps" @checkSwap="checkSwap" @uncheckSwap="uncheckSwap"/>
         <button class="button is-success" @click="submit">Submeter Pedidos</button>
       </div>
     </div>
@@ -47,11 +47,11 @@ export default {
   data(){
     return {
       date: null,
-      user_shift: null,
-      available_swaps: [],
+      userShift: null,
+      availableSwaps: [],
       users: null,
-      proposed_swaps: [],
-      min_date: null,
+      proposedSwaps: [],
+      minDate: null,
       error: false
     }
   },
@@ -73,14 +73,14 @@ export default {
     this.$refs.datePickerInput.openMenu()
 
     let today = new Date();
-    this.min_date = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1);
+    this.minDate = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1);
   },
   methods: {
     checkSwap(swap){
-      this.proposed_swaps.push(swap)
+      this.proposedSwaps.push(swap)
     },
     uncheckSwap(swap){
-      this.proposed_swaps = this.proposed_swaps.filter(s => !this.equalObjects(s, swap))
+      this.proposedSwaps = this.proposedSwaps.filter(s => !this.equalObjects(s, swap))
     },
     equalObjects(obj1, obj2){
       for (let prop in obj1) {
@@ -92,14 +92,14 @@ export default {
       return true
     },
     submit(){
-      if(!this.proposed_swaps.length){
+      if(!this.proposedSwaps.length){
         this.$toast.error('Tem de selecionar pelo menos 1 turno para pedir troca');
         return;
       }
 
       axios.post('/swaps', {
-        user_shift: this.user_shift,
-        swaps: this.proposed_swaps
+        user_shift: this.userShift,
+        swaps: this.proposedSwaps
       })
           .then(response => {
             this.$toast.success(response.data.message)
@@ -122,8 +122,8 @@ export default {
         })
             .then(response => {
               if(response.data){
-                this.user_shift = response.data.user_shift
-                this.available_swaps = response.data.available_swaps
+                this.userShift = response.data.user_shift
+                this.availableSwaps = response.data.available_swaps
                 this.users = response.data.user_ids
               }
             })

@@ -28,11 +28,9 @@
       </div>
     </div>
 
-    <RouterLink :to="{ name: 'users' }">
-      <button class="button is-primary is-light mb-4 mr-2">
-        Voltar
-      </button>
-    </RouterLink>
+    <button class="button is-primary is-light mb-4 mr-2" @click="$router.push({ name: 'users' })">
+      Voltar
+    </button>
 
   </DashboardLayout>
 </template>
@@ -40,7 +38,6 @@
 <script>
 import DashboardLayout from "@/layouts/DashboardLayout.vue";
 import axios from "axios";
-import ServiceNursesTable from "@/components/Services/NursesTable.vue";
 export default {
   name: 'show-user',
   components: { DashboardLayout },
