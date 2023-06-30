@@ -5,7 +5,7 @@
         <div class="columns is-centered">
           <div class="column is-6-tablet is-5-desktop is-4-widescreen">
             <div class="box">
-              <img src="@/assets/img/logo.png" alt="logo">
+              <img src="@/assets/img/logo.webp" alt="logo">
                 <div class="field">
                   <div class="control">
                     <input v-model="password" :disabled="processing" class="input" type="password" placeholder="Nova Password" autocomplete="new password">
@@ -73,7 +73,7 @@ export default {
 
 <style scoped>
 .main {
-  background-image: url("@/assets/img/auth_bg.jpg");
+  background-image: url("@/assets/img/auth_bg.webp");
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;

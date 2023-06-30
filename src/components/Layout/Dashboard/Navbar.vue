@@ -2,7 +2,7 @@
   <nav class="navbar is-fixed-top is-transparent" role="navigation" aria-label="main navigation" v-if="user">
     <div class="navbar-brand">
       <RouterLink :to="{ name: 'dashboard' }" class="navbar-item">
-        <img src="@/assets/img/logo.png" height="253" style="max-height: 3rem;">
+        <img src="@/assets/img/logo.webp" height="253" style="max-height: 3rem;">
       </RouterLink>
 
       <a role="button" class="navbar-burger" @click="show = !show" :class="{ 'is-active': show }">
