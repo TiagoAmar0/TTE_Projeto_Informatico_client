@@ -1,11 +1,17 @@
 <template>
   <DashboardLayout :title="service.name">
     <h1 class="is-size-4 mb-2">Enfermeiros ({{ service.users.length }}):</h1>
-    <button class="button is-primary is-light mb-4 mr-2" @click="$router.push({ name: 'services' })">
+    <button class="button is-primary is-light mb-4 mx-1" @click="$router.push({ name: 'services' })" v-if="$store.getters.authUserType === 'admin'">
       Voltar
     </button>
-    <button class="button is-primary" @click="$router.push({ name: 'service.edit', params: { id: $route.params.id }})">
+    <button class="button is-primary mx-1" @click="$router.push({ name: 'service.edit', params: { id: $route.params.id }})">
       Editar Serviço
+    </button>
+    <button class="button is-secondary mx-1" @click="$router.push({ name: 'service.schedules', params: { id: $route.params.id }})">
+      Horários
+    </button>
+    <button class="button is-secondary mx-1" @click="$router.push({ name: 'service.shifts', params: { id: $route.params.id }})">
+      Configurar Turnos
     </button>
     <service-nurses-table :nurses="service.users" @disassociate="disassociate"/>
   </DashboardLayout>

@@ -1,6 +1,6 @@
 <template>
   <DashboardLayout title="Turnos do Serviço">
-    <button class="button is-secondary mx-1 mb-4" @click="$router.push({ name: 'services' })">
+    <button class="button is-primary is-light mx-1 mb-4" @click="$router.back()">
       Voltar
     </button>
     <button class="button is-primary mx-1 mb-4" @click="$router.push({ name: 'service.shifts.add' })">

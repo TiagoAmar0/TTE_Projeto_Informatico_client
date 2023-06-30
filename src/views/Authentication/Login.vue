@@ -50,58 +50,6 @@
       </div>
     </div>
   </section>
-<!--    <section class="hero is-success is-fullheight" id="auth-container">-->
-<!--      <div class="hero-body">-->
-<!--        <div class="container has-text-centered">-->
-<!--          <div class="column is-4 is-offset-4">-->
-<!--            <div class="box">-->
-<!--              <img src="@/assets/img/logo.png" alt="logo">-->
-
-<!--              <form @submit.prevent="login" v-if="!forgotPasswordForm">-->
-<!--                <div class="field">-->
-<!--                  <div class="control">-->
-<!--                    <input v-model="email" :disabled="processing" class="input is-large" type="email" placeholder="Email" autocomplete="email">-->
-<!--                  </div>-->
-<!--                </div>-->
-
-<!--                <div class="field">-->
-<!--                  <div class="control">-->
-<!--                    <input  v-model="password" :disabled="processing" class="input is-large" type="password" placeholder="Password" autocomplete="password">-->
-<!--                  </div>-->
-<!--                </div>-->
-<!--                <button type="submit" class="button is-block is-primary is-large is-fullwidth" :disabled="processing" :class="{ 'is-loading': processing }">-->
-<!--                  Login-->
-<!--                </button>-->
-<!--                <button class="button is-block is-link is-light is-large is-fullwidth mt-2" @click="openForgotForm">-->
-<!--                  Esqueci-me da senha-->
-<!--                </button>-->
-<!--              </form>-->
-
-<!--              <form @submit.prevent="forgotPassword" v-else>-->
-<!--                <div v-if="!forgotFormSent">-->
-<!--                  <div class="field">-->
-<!--                    <div class="control">-->
-<!--                      <input :disabled="processing" class="input is-large" type="email" placeholder="Email" v-model="forgotPasswordEmail" autocomplete="email">-->
-<!--                    </div>-->
-<!--                  </div>-->
-
-<!--                  <button type="submit" class="button is-block is-primary is-large is-fullwidth" :disabled="processing" :class="{ 'is-loading': processing }">-->
-<!--                    Recuperar Senha-->
-<!--                  </button>-->
-<!--                  <button class="button is-block is-link is-light is-large is-fullwidth mt-2" @click="backForgotForm">-->
-<!--                    Voltar-->
-<!--                  </button>-->
-<!--                </div>-->
-<!--                <div v-else style="text-align: center">-->
-<!--                  <p>Foi enviado um email para recuperar o acesso.</p>-->
-<!--                </div>-->
-<!--              </form>-->
-<!--            </div>-->
-
-<!--          </div>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </section>-->
 </template>
 
 <script>

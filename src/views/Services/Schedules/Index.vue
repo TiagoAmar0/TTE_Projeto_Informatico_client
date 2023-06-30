@@ -1,7 +1,7 @@
 <template>
   <DashboardLayout title="Horários">
 
-    <button class="button is-secondary mx-1 mb-4" @click="$router.push({ name: 'services' })">
+    <button class="button is-primary is-light mx-1 mb-4" @click="$router.push({ name: 'services' })">
       Voltar
     </button>
 

@@ -28,7 +28,7 @@
         </thead>
         <tbody>
         <tr v-for="(user, user_index) in schedule.users">
-          <td class="is-narrow">{{ user.name }} ({{ user.total_hours }} horas)</td>
+          <td class="is-narrow">{{ user.name }} ({{ user.total_hours }} horas<span v-if="user.spare_minutes > 0"> {{ user.spare_minutes }} minutos</span>)</td>
           <td v-for="date_index in dates_in_range.length" :class="{'is-warning': dates_in_range[date_index - 1].day_of_week === 0 || dates_in_range[date_index - 1].day_of_week === 6}">
             {{ dates_in_range[date_index - 1].nurses[user_index].shift ? dates_in_range[date_index - 1].nurses[user_index].shift : '-'}}
           </td>
@@ -155,14 +155,19 @@ export default {
         .then(response => {
           this.schedule = response.data.data
           this.schedule.users = this.schedule.users.map(u => {
+            let total_minutes = this.schedule.user_shifts.reduce((acc, us) => {
+              if(us.user_id !== u.id)
+                return acc
+
+              return acc + us.shift.minutes
+            }, 0)
+
+
+
             return {
               ...u,
-              total_hours: this.schedule.user_shifts.reduce((acc, us) => {
-                if(us.user_id !== u.id)
-                  return acc
-
-                return acc + (us.shift.minutes/60)
-              }, 0),
+              total_hours: Math.floor(total_minutes / 60),
+              spare_minutes: Math.floor(total_minutes % 60)
             }
           })
           let start_date_formatted = this.schedule.start.replace('/', '-')
