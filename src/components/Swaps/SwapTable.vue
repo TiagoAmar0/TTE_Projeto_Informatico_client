@@ -11,12 +11,13 @@
         <tr v-for="(user, userID) in users" :key="userID">
           <td>{{ user }}</td>
           <td>
-            <span v-for="swap in filteredSwaps(userID)">
+            <span v-for="(swap, index) in filteredSwaps(userID)">
               <input type="checkbox" v-model="swap.checked" @input="handleCheckChange(swap)">
               {{ swap.rest
-                ? `Folgar hoje e pagar em ${swap.date} (${swap.day_of_week}) no turno ${swap.shift_name}`
+                ? `Folgar hoje e pagar a ${swap.day} de ${swap.month} (${swap.day_of_week}) no turno ${swap.shift_name}`
                 : `Troca direta para o turno ${swap.shift_name} de hoje` }}
-              <br>
+              <br v-if="index < filteredSwaps(userID).length - 1">
+              <br v-if="index < filteredSwaps(userID).length - 1">
             </span>
           </td>
         </tr>
