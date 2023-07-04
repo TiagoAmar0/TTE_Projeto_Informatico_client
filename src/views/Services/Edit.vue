@@ -21,7 +21,7 @@
     <service-nurses-table :nurses="service.users" @disassociate="disassociate"  :processing="processing"/>
     <hr>
     <h1 class="is-size-4 mb-2">Associar enfermeiros</h1>
-    <associate-nurse-table :nurses="nursesWithoutService" @associate="associate" :processing="processing"/>
+    <associate-nurse-table :nurses="service.nursesWithoutService" @associate="associate" :processing="processing"/>
   </DashboardLayout>
 </template>
 
@@ -40,7 +40,8 @@ export default {
       service: {
         id: null,
         name: '',
-        users: []
+        users: [],
+        nursesWithoutService: []
       }
     }
   },
@@ -57,11 +58,6 @@ export default {
           this.processing = false
         })
 
-  },
-  computed: {
-    nursesWithoutService(){
-      return this.$store.getters.usersWithoutService
-    },
   },
   methods: {
     disassociate(userId){
