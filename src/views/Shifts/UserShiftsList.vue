@@ -7,6 +7,7 @@
         locale="pt-PT"
         week-numbers="local"
         auto-apply
+        :min-date="minDate"
         :close-on-auto-apply="true"
         :enable-time-picker="false"
     />
@@ -44,6 +45,13 @@ export default {
     }
   },
   computed: {
+    minDate(){
+      let today = new Date()
+      let dayOfTheWeek = today.getDay()
+      let daysToSubtract = dayOfTheWeek === 0 ? 6 : dayOfTheWeek - 1
+
+      return new Date(today.getFullYear(), today.getMonth(), today.getDate() - daysToSubtract)
+    },
     userShifts(){
       if(!this.date || !this.$store.state.user || !this.$store.state.user.shifts || !this.$store.state.user.shifts.length)
         return [];
