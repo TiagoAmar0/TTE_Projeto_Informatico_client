@@ -42,7 +42,7 @@
 <script>
 export default {
   name: 'associate-nurse-table',
-  props: ['nurses', 'processing'],
+  props: ['nurses', 'processing', 'serviceHasLead'],
   data(){
     return {
       search: ''
@@ -50,7 +50,7 @@ export default {
   },
   computed: {
     leadNurses(){
-      return this.nurses.filter(nurse => nurse.type === 'lead-nurse')
+      return this.serviceHasLead ? [] : this.nurses.filter(nurse => nurse.type === 'lead-nurse')
     },
     nurses(){
       return this.nurses.filter(nurse => nurse.type === 'nurse')

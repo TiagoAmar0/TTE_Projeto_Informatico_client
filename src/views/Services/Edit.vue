@@ -21,7 +21,7 @@
     <service-nurses-table :nurses="service.users" @disassociate="disassociate"  :processing="processing"/>
     <hr>
     <h1 class="is-size-4 mb-2">Associar enfermeiros</h1>
-    <associate-nurse-table :nurses="service.nursesWithoutService" @associate="associate" :processing="processing"/>
+    <associate-nurse-table :nurses="service.nursesWithoutService" @associate="associate" :processing="processing" :serviceHasLead="service.serviceHasLead"/>
   </DashboardLayout>
 </template>
 
@@ -41,7 +41,8 @@ export default {
         id: null,
         name: '',
         users: [],
-        nursesWithoutService: []
+        nursesWithoutService: [],
+        serviceHasLead: false,
       }
     }
   },
