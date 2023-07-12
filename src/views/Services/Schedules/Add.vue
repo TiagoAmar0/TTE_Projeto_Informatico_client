@@ -15,7 +15,7 @@
     </div>
 
     <div v-if="dateRange" class="table-container">
-      <table class="table is-fullwidth">
+      <table class="table is-fullwidth is-striped is-bordered">
         <thead>
           <tr>
             <td></td>

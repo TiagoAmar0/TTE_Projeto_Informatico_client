@@ -27,7 +27,7 @@
         <RouterLink :to="{ name: 'service.show', params: { id: user.service_id } }" class="navbar-item" v-if="user.type === 'lead-nurse' && user.hasOwnProperty('service_id') && user.service_id">
           O meu Serviço
         </RouterLink>
-        <RouterLink :to="{ name: 'swaps.propose' }" class="navbar-item" v-if="user.type !== 'administrator' && user.hasOwnProperty('service_id') && user.service_id">
+        <RouterLink :to="{ name: 'swaps.propose' }" class="navbar-item" v-if="user.type === 'nurse' && user.hasOwnProperty('service_id') && user.service_id">
           Pedir Troca
         </RouterLink>
         <RouterLink :to="{ name: 'service.schedules', params: { id: user.service_id } }" class="navbar-item" v-if="user.type === 'lead-nurse' && user.hasOwnProperty('service_id') && user.service_id">
@@ -39,9 +39,8 @@
         <div class="navbar-item">
           <div class="buttons">
             <button class="button" @click="$router.push({ name: 'profile' })">
-              <span class="icon is-small">
-                <i class="fas fa-user"></i>
-              </span>
+              <i class="fas fa-user mr-2"></i>
+              {{ user.name }}
             </button>
             <button class="button is-primary" :class="{ 'is-loading': processing }" :disabled
                 ="processing" @click="logout">

@@ -23,8 +23,10 @@ export default {
 </script>
 
 <style scoped>
-.card {
-  height: 100%;
-  min-height: 9rem;
+@media (min-width: 1024px) {
+  .card {
+    height: 100%;
+    min-height: 9rem;
+  }
 }
 </style>

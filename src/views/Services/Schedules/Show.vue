@@ -10,7 +10,7 @@
       Exportar
     </button>
     <div v-if="dateRange" class="table-container">
-      <table class="table is-fullwidth is-bordered">
+      <table class="table is-fullwidth is-bordered is-striped">
         <thead>
         <tr>
           <td></td>

@@ -10,7 +10,7 @@
           <div class="list-item-description" v-if="swap.direct">
             <u>{{ swap.payment_shift_user.day_name }}. {{ swap.payment_shift_user.day }} {{ swap.payment_shift_user.month }}</u>
             <br>
-            - Fazer <u><strong>{{ swap.payment_shift_user.shift.description }}</strong></u> em vez de <u><strong>{{ swap.target_shift_user.shift.description }}</strong></u>
+            - Fazer <u><strong>{{ swap.target_shift_user.shift.description }}</strong></u> em vez de <u><strong>{{ swap.payment_shift_user.shift.description }}</strong></u>
             <br>
             <div class="buttons are-small mt-1">
               <button :disabled="processing" class="button is-success" @click="approve(swap.id)">Aceitar</button>
