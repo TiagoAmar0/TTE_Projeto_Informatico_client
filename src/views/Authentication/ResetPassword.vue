@@ -1,34 +1,32 @@
 <template>
-  <section class="main hero is-primary is-fullheight">
-    <div class="hero-body">
-      <div class="container">
-        <div class="columns is-centered">
-          <div class="column is-6-tablet is-5-desktop is-4-widescreen">
-            <div class="box">
-              <img src="@/assets/img/logo.webp" alt="logo">
-                <div class="field">
-                  <div class="control">
-                    <input v-model="password" :disabled="processing" class="input" type="password" placeholder="Nova Password" autocomplete="new password">
-                  </div>
-                </div>
-
-                <div class="field">
-                  <div class="control">
-                    <input v-model="passwordConfirmation" :disabled="processing" class="input" type="password" placeholder="Confirmar Password" autocomplete="new password">
-                  </div>
-                </div>
-                <button @click="resetPassword" class="button is-block is-primary is-large is-fullwidth" :disabled="processing" :class="{ 'is-loading': processing }">
-                  Definir Password
-                </button>
-                <button :disabled="processing" class="button is-block is-link is-light is-large is-fullwidth mt-2"  @click="$router.push({ name: 'login' })">
-                  Voltar
-                </button>
-            </div>
-          </div>
+  <div class="container is-fullheight is-centered has-text-centered">
+    <div class="main-form">
+      <div class="has-text-centered">
+        <img src="@/assets/img/logo.webp" alt="logo">
+      </div>
+      <div class="field">
+        <div class="control">
+          <input v-model="password" :disabled="processing" class="input" type="password" placeholder="Nova Password" autocomplete="new password">
         </div>
       </div>
+
+      <div class="field">
+        <div class="control">
+          <input v-model="passwordConfirmation" :disabled="processing" class="input" type="password" placeholder="Confirmar Password" autocomplete="new password">
+        </div>
+      </div>
+
+      <button @click="resetPassword" class="button is-block is-primary is-large is-fullwidth" :disabled="processing" :class="{ 'is-loading': processing }">
+        Confirmar
+      </button>
+
+      <div class="mt-3">
+        <span class="button-text mt-3 is-link" @click="$router.push({ name: 'login' })">Voltar</span>
+      </div>
+
     </div>
-  </section>
+
+  </div>
 </template>
 
 <script>
@@ -72,10 +70,14 @@ export default {
 </script>
 
 <style scoped>
-.main {
-  background-image: url("@/assets/img/auth_bg.webp");
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
+.main-form {
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.button-text {
+  cursor: pointer;
 }
 </style>
