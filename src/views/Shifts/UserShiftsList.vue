@@ -15,7 +15,7 @@
     <div v-if="date" class="list has-hoverable-list-items has-overflow-ellipsis">
       <div class="list-item" v-for="shift in userShifts">
         <div class="list-item-content">
-          <div class="list-item-title is-flex is-justify-content-space-between">
+          <div class="list-item-title">
             <span>{{ shift.date }}</span>
           </div>
           <div class="list-item-description">

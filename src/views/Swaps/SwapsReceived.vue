@@ -4,28 +4,36 @@
       <div class="list-item" v-for="swap in swapsReceived">
 
         <div class="list-item-content">
-          <div class="list-item-title is-flex is-justify-content-space-between">
+          <div class="list-item-title">
             <span>De: {{ swap.proposing_user.name }}</span>
           </div>
-          <div class="list-item-description" v-if="swap.direct">
+          <div class="list-item-description is-flex is-flex-direction-column" v-if="swap.direct">
             <u>{{ swap.payment_shift_user.day_name }}. {{ swap.payment_shift_user.day }} {{ swap.payment_shift_user.month }}</u>
-            <br>
+            <span>
             - Fazer <u><strong>{{ swap.target_shift_user.shift.description }}</strong></u> em vez de <u><strong>{{ swap.payment_shift_user.shift.description }}</strong></u>
-            <br>
+            </span>
             <div class="buttons are-small mt-1">
               <button :disabled="processing" class="button is-success" @click="approve(swap.id)">Aceitar</button>
               <button :disabled="processing" class="button is-danger" @click="reject(swap.id)">Rejeitar</button>
             </div>
           </div>
-          <div class="list-item-description" v-else>
-            <u>{{ swap.target_shift_user.day_name }}. {{ swap.target_shift_user.day }} {{ swap.target_shift_user.month }}</u>
-            <br>
+          <div class="list-item-description is-flex is-flex-direction-column" v-else>
+            <span>
+              <u>{{ swap.target_shift_user.day_name }}. {{ swap.target_shift_user.day }} {{ swap.target_shift_user.month }}</u>
+            </span>
+
+            <span>
              - Fazer <u><strong>{{ swap.target_shift_user.shift.description }}</strong></u> em vez de <u><strong>Folga</strong></u>
-            <br>
-            <u>{{ swap.payment_shift_user.day_name }}. {{ swap.payment_shift_user.day }} {{ swap.payment_shift_user.month }}</u>
-            <br>
+            </span>
+
+            <span>
+              <u>{{ swap.payment_shift_user.day_name }}. {{ swap.payment_shift_user.day }} {{ swap.payment_shift_user.month }}</u>
+            </span>
+
+            <span>
             - <u><strong>Folga</strong></u> em vez de <u><strong>{{ swap.payment_shift_user.shift.description }}</strong></u>
-            <br>
+            </span>
+
             <div class="buttons are-small mt-1">
               <button :disabled="processing" class="button is-success" @click="swapToConfirm = swap.id; action='approve'">Aceitar</button>
               <button :disabled="processing" class="button is-danger" @click="swapToConfirm = swap.id; action='reject'">Rejeitar</button>
