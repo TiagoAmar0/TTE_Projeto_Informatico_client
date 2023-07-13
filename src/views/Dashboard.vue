@@ -2,6 +2,14 @@
   <DashboardLayout title="Dashboard" :show-card="false">
 
     <div class="columns">
+      <div class="column is-one-fourth" v-if="user && user.service_id">
+        <item-card :isDashboard="true">
+          <h1 class="is-size-4" v-if="user.type !== 'admin'">
+            {{ user.type === 'lead-nurse' ? 'Enfermeiro Chefe' : 'Enfermeiro'}}: {{ user.service }}
+          </h1>
+          <h1 class="is-size-4" v-else>Administrador</h1>
+        </item-card>
+      </div>
       <div class="column is-one-fourth pointable"
            v-if="user && user.type === 'lead-nurse' && user.service_id"
            @click="$router.push({ name: 'service.show', params: { id: user.service_id }})"
@@ -11,7 +19,7 @@
         </item-card>
       </div>
       <div class="column is-one-fourth pointable"
-           v-if="user && user.type !== 'admin'"
+           v-if="user && user.type === 'nurse'"
            @click="this.$router.push({ name: 'swaps.sent' })">
         <item-card :isDashboard="true">
           <h1 class="is-size-4">Pedidos de troca enviados</h1>
@@ -38,7 +46,7 @@
         </item-card>
       </div>
       <div class="column is-one-fourth pointable"
-           v-if="user && user.type !== 'admin'"
+           v-if="user && user.type === 'nurse'"
            @click="this.$router.push({ name: 'swaps.received' })">
         <item-card :isDashboard="true">
             <h1 class="is-size-4">Pedidos de troca recebidos</h1>
@@ -56,14 +64,14 @@
 
     <div class="columns">
       <div class="column is-one-fourth pointable"
-           v-if="user && user.type !== 'admin'"
+           v-if="user && user.type === 'nurse'"
            @click="this.$router.push({ name: 'swaps.propose' })">
         <item-card :isDashboard="true">
           <h1 class="is-size-4">Pedir troca</h1>
         </item-card>
       </div>
       <div class="column is-one-fourth pointable"
-           v-if="user && user.type !== 'admin'"
+           v-if="user && user.type === 'nurse'"
            @click="this.$router.push({ name: 'swaps.history' })">
         <item-card :isDashboard="true">
           <h1 class="is-size-4">Histórico de trocas</h1>
@@ -73,7 +81,7 @@
            v-if="user && user.type !== 'admin'"
            @click="this.$router.push({ name: 'user.shifts' })">
         <item-card :isDashboard="true">
-          <h1 class="is-size-4">Os meus turnos</h1>
+          <h1 class="is-size-4">O meu horário</h1>
         </item-card>
       </div>
       <div class="column is-one-fourth pointable" @click="this.$router.push({ name: 'profile' })" v-if="user && user.type !== 'admin'">

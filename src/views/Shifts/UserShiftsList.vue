@@ -1,5 +1,5 @@
 <template>
-  <DashboardLayout title="Os meus turnos">
+  <DashboardLayout title="O meu horário">
     <VueDatePicker
         v-model="date"
         format="dd-MM-yyyy"
@@ -20,6 +20,11 @@
           </div>
           <div class="list-item-description">
             {{ shift.shift }}
+            <button class="button is-primary is-small" v-if="shift.shift !== 'Folga' && !shift.isPast"
+              @click="$router.push({ name: 'swaps.propose', query: { 'date': shift.dateString }})"
+            >
+              Pedir Troca
+            </button>
           </div>
         </div>
       </div>
@@ -82,17 +87,23 @@ export default {
         const monthName = this.months[parsedDate.getMonth()]
         const day = parsedDate.getDate()
 
+        console.log(parsedDate, parsedDate >= new Date().setHours(0,0,0))
+
         const shift = shifts.find(s => s.date === date)
         if(shift){
           return {
             date: `${dayName} ${day} ${monthName}`,
             shift: shift.shift.description,
+            dateString: date,
+            isPast: parsedDate.setHours(0,0,0) <= new Date().setHours(0,0,0)
           }
         }
 
         return {
           date: `${dayName} ${day} ${monthName}`,
-          shift: 'Folga'
+          shift: 'Folga',
+          dateString: date,
+          isPast: parsedDate.setHours(0,0,0) <= new Date().setHours(0,0,0)
         }
       })
     }
@@ -122,3 +133,11 @@ export default {
   }
 }
 </script>
+
+<style>
+.list-item-description{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+</style>

@@ -1,5 +1,15 @@
 <template>
   <DashboardLayout title="Pedidos de Troca Enviados">
+    <u><strong>Filtar por estado:</strong></u>
+    <div class="control">
+      <label class="radio" v-for="option in status" :key="status.value">
+        <input type="radio" :value="option.value" v-model="filterStatus">
+        {{ option.label }}
+      </label>
+    </div>
+
+
+    <hr>
     <div v-if="sentSwaps && sentSwaps.length" class="list has-hoverable-list-items has-overflow-ellipsis">
       <div class="list-item" v-for="swap in sentSwaps">
         <div class="list-item-content">
@@ -9,7 +19,7 @@
           <div class="list-item-description" v-if="swap.direct">
             <u>{{ swap.target_shift_user.day_name }}. {{ swap.target_shift_user.day }} {{ swap.target_shift_user.month }}</u>
             <br>
-            - Fazer <u><strong>{{ swap.target_shift_user.shift.description }}</strong></u> em vez de <u><strong>{{ swap.payment_shift_user.shift.description }}</strong></u>
+            - Fazer <u><strong>{{ swap.payment_shift_user.shift.description }}</strong></u> em vez de <u><strong>{{ swap.target_shift_user.shift.description }}</strong></u>
             <br>
             <strong :class="{
               'has-text-info': swap.status === 'Pendente',
@@ -46,9 +56,25 @@ import 'bulma-list/css/bulma-list.css'
 export default {
   name: 'swaps-sent',
   components: { DashboardLayout },
+  data(){
+    return {
+      filterStatus: 'all',
+      status: [
+        {value: 'all', label: 'Todos'},
+        {value: 'Rejeitado', label: 'Rejeitados'},
+        {value: 'Pendente', label: 'Pendentes'},
+        {value: 'Aprovado', label: 'Aprovados'},
+      ]
+    }
+  },
   computed: {
     sentSwaps(){
-      return this.$store.getters.swapsProposedByUser
+      return this.$store.getters.swapsProposedByUser.filter(swap => {
+        if(this.filterStatus === 'all')
+          return true
+        else
+          return swap.status == this.filterStatus
+      })
     }
   },
 }

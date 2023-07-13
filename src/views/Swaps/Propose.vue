@@ -25,7 +25,7 @@
       </div>
       <div v-if="availableSwaps && availableSwaps.length">
         <swap-table  :users="users" :swaps="availableSwaps" @checkSwap="checkSwap" @uncheckSwap="uncheckSwap"/>
-        <button class="button is-success" @click="submit">Submeter Pedidos</button>
+        <button :disabled="processing" :class="{ 'is-loading': processing }" class="button is-success" @click="submit">Submeter Pedidos</button>
       </div>
     </div>
     <div v-if="error">
@@ -52,7 +52,8 @@ export default {
       users: null,
       proposedSwaps: [],
       minDate: null,
-      error: false
+      error: false,
+      processing: false,
     }
   },
   computed: {
@@ -70,12 +71,20 @@ export default {
     }
   },
   mounted(){
-    this.$refs.datePickerInput.openMenu()
-
     let today = new Date();
     this.minDate = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1);
+    if(this.$route.query.date){
+      this.date = this.parseDate(this.$route.query.date)
+      this.handleDateChange()
+    } else {
+      this.$refs.datePickerInput.openMenu()
+    }
   },
   methods: {
+    parseDate(dateString){
+      const [day, month, year] = dateString.split('/');
+      return new Date(`${year}-${month}-${day}`);
+    },
     checkSwap(swap){
       this.proposedSwaps.push(swap)
     },
@@ -92,8 +101,10 @@ export default {
       return true
     },
     submit(){
+      this.processing = true
       if(!this.proposedSwaps.length){
         this.$toast.error('Tem de selecionar pelo menos 1 turno para pedir troca');
+        this.processing = false
         return;
       }
 
@@ -110,6 +121,9 @@ export default {
           })
           .catch(error => {
             this.$toast.error(error.response.data.message)
+          })
+          .finally(() => {
+            this.processing = false
           })
     },
     handleDateChange(){

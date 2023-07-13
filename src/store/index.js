@@ -187,7 +187,7 @@ export default createStore({
         async refresh (context) {
             await context.dispatch('loadLoggedInUser')
 
-            if(context.state.user.type !== 'admin'){
+            if(context.state.user.type === 'nurse'){
                 let swapsProposedByUserPromise = context.dispatch('loadSwapsProposedByUser')
                 let swapsProposedToUserPromise = context.dispatch('loadSwapsProposedToUser')
 

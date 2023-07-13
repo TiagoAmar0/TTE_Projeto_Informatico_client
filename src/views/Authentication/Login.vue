@@ -1,55 +1,60 @@
 <template>
-  <section class="main hero is-primary is-fullheight">
-    <div class="hero-body">
-      <div class="container">
-        <div class="columns is-centered">
-          <div class="column is-6-tablet is-5-desktop is-4-widescreen">
-            <form class="box" @submit.prevent="login" v-if="!forgotPasswordForm">
-              <img src="@/assets/img/logo.webp" alt="logo">
-              <div class="field">
-                <div class="control">
-                  <input v-model="email" :disabled="processing" class="input is-large" type="email" placeholder="Email" autocomplete="email">
-                </div>
-              </div>
+  <div class="container is-fullheight is-centered has-text-centered">
+    <form @submit.prevent="login" v-if="!forgotPasswordForm" class="main-form">
+      <div class="has-text-centered">
+        <img src="@/assets/img/logo.webp" alt="logo">
+      </div>
 
-              <div class="field">
-                <div class="control">
-                  <input  v-model="password" :disabled="processing" class="input is-large" type="password" placeholder="Password" autocomplete="password">
-                </div>
-              </div>
-              <button type="submit" class="button is-block is-primary is-large is-fullwidth" :disabled="processing" :class="{ 'is-loading': processing }">
-                Login
-              </button>
-              <button class="button is-block is-link is-light is-large is-fullwidth mt-2" @click="openForgotForm">
-                Esqueci-me da password
-              </button>
-            </form>
-
-            <form @submit.prevent="forgotPassword" class="box" v-else>
-              <img src="@/assets/img/logo.webp" alt="logo">
-                <div v-if="!forgotFormSent">
-                  <div class="field">
-                    <div class="control">
-                      <input :disabled="processing" class="input is-large" type="email" placeholder="Email" v-model="forgotPasswordEmail" autocomplete="email">
-                    </div>
-                  </div>
-
-                  <button type="submit" class="button is-block is-primary is-large is-fullwidth" :disabled="processing" :class="{ 'is-loading': processing }">
-                    Recuperar Password
-                  </button>
-                  <button class="button is-block is-link is-light is-large is-fullwidth mt-2" @click="backForgotForm">
-                    Voltar
-                  </button>
-                </div>
-                <div v-else style="text-align: center">
-                  <p>Foi enviado um email para recuperar o acesso.</p>
-                </div>
-            </form>
-          </div>
+      <div class="field">
+        <div class="control">
+          <input v-model="email" :disabled="processing" class="input is-large" type="email" placeholder="Email" autocomplete="email">
         </div>
       </div>
+
+      <div class="field">
+      <div class="control">
+        <input v-model="password" :disabled="processing" class="input is-large" type="password" placeholder="Password" autocomplete="password">
+      </div>
     </div>
-  </section>
+      <div class="has-text-centered">
+        <button type="submit" class="button is-block is-primary is-large is-fullwidth" :disabled="processing" :class="{ 'is-loading': processing }">
+          Login
+        </button>
+        <div class="mt-3">
+          <span class="button-text mt-3 is-link" @click="openForgotForm">Esqueci-me da password</span>
+        </div>
+
+      </div>
+
+    </form>
+
+    <form @submit.prevent="forgotPassword" v-else class="main-form">
+      <div class="has-text-centered">
+        <img src="@/assets/img/logo.webp" alt="logo">
+      </div>
+      <div v-if="!forgotFormSent">
+        <div class="field">
+          <div class="control">
+            <input :disabled="processing" class="input is-large" type="email" placeholder="Email" v-model="forgotPasswordEmail" autocomplete="email">
+          </div>
+        </div>
+
+        <button type="submit" class="button is-block is-primary is-large is-fullwidth" :disabled="processing" :class="{ 'is-loading': processing }">
+          Recuperar
+        </button>
+        <div class="mt-3">
+          <span class="button-text mt-3 is-link" @click="backForgotForm">Voltar</span>
+        </div>
+      </div>
+      <div v-else style="text-align: center">
+        <p>Foi enviado um email para recuperar o acesso.</p>
+      </div>
+    </form>
+
+  </div>
+
+
+
 </template>
 
 <script>
@@ -58,6 +63,7 @@ import axios from "axios";
 export default {
   data () {
     return {
+      isMobile: false,
       email: null,
       password: null,
       processing: false,
@@ -103,9 +109,13 @@ export default {
     backForgotForm(){
       this.forgotPasswordForm = false;
       this.forgotPasswordEmail = null
+    },
+    checkScreenSize(){
+      this.isMobile = window.innerWidth < 1024;
     }
   },
   mounted(){
+  this.checkScreenSize();
    if(this.$store.state.user)
      this.$router.push({ name: 'dashboard' })
   }
@@ -113,10 +123,14 @@ export default {
 </script>
 
 <style scoped>
-  .main {
-    background-image: url("@/assets/img/auth_bg.webp");
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
+  .main-form {
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .button-text {
+    cursor: pointer;
   }
 </style>
