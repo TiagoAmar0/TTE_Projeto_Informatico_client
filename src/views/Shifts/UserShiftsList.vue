@@ -20,8 +20,8 @@
           </div>
           <div class="list-item-description">
             {{ shift.shift }}
-            <button class="button is-primary is-small" v-if="shift.shift !== 'Folga' && !shift.isPast"
-              @click="$router.push({ name: 'swaps.propose', query: { 'date': shift.dateString }})"
+            <button class="button is-primary is-small" v-if="user && user.type === 'nurse' && shift.shift !== 'Folga' && !shift.isPast"
+                    @click="$router.push({ name: 'swaps.propose', query: { 'date': shift.dateString }})"
             >
               Pedir Troca
             </button>
@@ -50,6 +50,9 @@ export default {
     }
   },
   computed: {
+    user(){
+      return this.$store.getters.authUser ? this.$store.getters.authUser : null
+    },
     minDate(){
       let today = new Date()
       let dayOfTheWeek = today.getDay()
